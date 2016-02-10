@@ -13,13 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.castlemon.maven.domain.Usage;
-import com.castlemon.maven.runner.UsageAnalyser;
 import com.opencsv.CSVWriter;
 
 @Component
 public class CSVOutput {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UsageAnalyser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CSVOutput.class);
 
     String[] titles = { "Group", "Artifact", "Version", "Parent Group", "Parent Artifact", "Version Used", "Classifier",
             "Scope" };

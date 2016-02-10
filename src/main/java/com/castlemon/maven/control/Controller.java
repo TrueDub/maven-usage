@@ -24,12 +24,16 @@ import org.springframework.stereotype.Component;
 import com.castlemon.maven.domain.Usage;
 import com.castlemon.maven.exception.InvalidFileException;
 import com.castlemon.maven.output.CSVOutput;
+import com.castlemon.maven.output.HTMLOutput;
 
 @Component
 public class Controller {
 
     @Autowired
     private CSVOutput csvOutput;
+
+    @Autowired
+    private HTMLOutput htmlOutput;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
@@ -55,9 +59,11 @@ public class Controller {
         // remove nulls
         usages.removeAll(Collections.singleton(null));
         // write output
-        outputCSV(usages);
         if (outputFormats.contains("csv")) {
             csvOutput.writeCSVFile(usages, outputDirectory);
+        }
+        if (outputFormats.contains("html")) {
+            htmlOutput.writeHTMLOutput(group, artifact, directoryName, usages, outputDirectory);
         }
     }
 
@@ -107,52 +113,13 @@ public class Controller {
                 }
             }
         } catch (FileNotFoundException e) {
-            LOGGER.error("unable to find pom file: " + pom.getAbsolutePath(), e);
+            LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());
         } catch (IOException e) {
-            LOGGER.error("unable to read pom file: " + pom.getAbsolutePath(), e);
+            LOGGER.error("unable to read pom file: " + pom.getAbsolutePath());
         } catch (XmlPullParserException e) {
-            LOGGER.error("unable to parse pom file: " + pom.getAbsolutePath(), e);
+            LOGGER.error("unable to parse pom file: " + pom.getAbsolutePath());
         }
         return null;
-    }
-
-    private void outputCSV(List<Usage> results) {
-        StringBuilder titles = new StringBuilder();
-        titles.append("Group");
-        titles.append(",");
-        titles.append("Artifact");
-        titles.append(",");
-        titles.append("Version");
-        titles.append(",");
-        titles.append("Parent Group");
-        titles.append(",");
-        titles.append("Parent Artifact");
-        titles.append(",");
-        titles.append("Version Used");
-        titles.append(",");
-        titles.append("Classifier");
-        titles.append(",");
-        titles.append("Scope");
-        System.out.println(titles.toString());
-        for (Usage result : results) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(result.getGroupId());
-            builder.append(",");
-            builder.append(result.getArtifactId());
-            builder.append(",");
-            builder.append(result.getVersion());
-            builder.append(",");
-            builder.append(result.getParentGroupId());
-            builder.append(",");
-            builder.append(result.getParentArtifactId());
-            builder.append(",");
-            builder.append(result.getVersionUsed());
-            builder.append(",");
-            builder.append(result.getClassifier());
-            builder.append(",");
-            builder.append(result.getScope());
-            System.out.println(builder.toString());
-        }
     }
 
 }
