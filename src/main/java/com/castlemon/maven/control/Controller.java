@@ -18,17 +18,23 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.castlemon.maven.domain.Usage;
 import com.castlemon.maven.exception.InvalidFileException;
+import com.castlemon.maven.output.CSVOutput;
 
 @Component
 public class Controller {
 
+    @Autowired
+    private CSVOutput csvOutput;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
-    public void executeAnalysis(String group, String artifact, String directoryName) {
+    public void executeAnalysis(String group, String artifact, String directoryName, List<String> outputFormats,
+            String outputDirectory) {
         File directory = null;
         // get reference to directory
         try {
@@ -46,9 +52,13 @@ public class Controller {
         for (File pom : results) {
             usages.add(processPomFile(pom, group, artifact));
         }
-        // remove nulls and write output
+        // remove nulls
         usages.removeAll(Collections.singleton(null));
+        // write output
         outputCSV(usages);
+        if (outputFormats.contains("csv")) {
+            csvOutput.writeCSVFile(usages, outputDirectory);
+        }
     }
 
     private File getDirectory(String directory) throws FileNotFoundException, InvalidFileException {
@@ -86,8 +96,10 @@ public class Controller {
                     usage.setGroupId(groupId);
                     usage.setArtifactId(model.getArtifactId());
                     usage.setVersion(version);
-                    usage.setParentGroupId(model.getParent().getGroupId());
-                    usage.setParentArtifactId(model.getParent().getArtifactId());
+                    if (model.getParent() != null) {
+                        usage.setParentGroupId(model.getParent().getGroupId());
+                        usage.setParentArtifactId(model.getParent().getArtifactId());
+                    }
                     usage.setVersionUsed(versionUsed);
                     usage.setClassifier(dependency.getClassifier());
                     usage.setScope(dependency.getScope());

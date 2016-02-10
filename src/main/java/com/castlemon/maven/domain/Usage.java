@@ -29,6 +29,12 @@ public class Usage {
 
     private String scope;
 
+    public String[] getCSVString() {
+        String[] fields = { groupId, artifactId, version, parentGroupId, parentArtifactId, versionUsed, classifier,
+                scope };
+        return fields;
+    }
+
     public String getScope() {
         return scope;
     }
