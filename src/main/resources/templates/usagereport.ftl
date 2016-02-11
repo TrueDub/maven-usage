@@ -69,8 +69,8 @@
 							<td>${usage.versionInherited?string('Yes', 'No')}</td>
 							<td><#if usage.scope??>${usage.scope}<#else>&nbsp;</#if></td>
 						</tr>
+						</#list>
 					</tbody>
-					</#list>
 				</table>
 			</div>
 		</div>
