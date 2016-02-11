@@ -1,6 +1,6 @@
 package com.castlemon.maven.domain;
 
-public class Usage {
+public class Usage implements Comparable<Usage> {
 
     /*
      * This class contains the fields captured when a usage of the specified artifact is found
@@ -16,31 +16,58 @@ public class Usage {
 
     private String version;
 
+    private String packaging;
+
     private String parentGroupId;
 
     private String parentArtifactId;
+
+    private String parentVersion;
 
     /*
      * All the fields below refer to the artifact being used
      */
     private String versionUsed;
 
-    private String classifier;
+    private boolean versionInherited;
 
     private String scope;
 
     public String[] getCSVString() {
-        String[] fields = { groupId, artifactId, version, parentGroupId, parentArtifactId, versionUsed, classifier,
-                scope };
+        String[] fields = { groupId, artifactId, version, packaging, parentGroupId, parentArtifactId, versionUsed,
+                Boolean.toString(versionInherited), scope };
         return fields;
     }
 
-    public String getScope() {
-        return scope;
+    public String getIdentifier() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.groupId);
+        builder.append(":");
+        builder.append(this.artifactId);
+        builder.append(":");
+        builder.append(this.version);
+        return builder.toString();
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
+    public String getParentIdentifier() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(this.parentGroupId);
+        builder.append(":");
+        builder.append(this.parentArtifactId);
+        builder.append(":");
+        builder.append(this.parentVersion);
+        return builder.toString();
+    }
+
+    public int compareTo(Usage other) {
+        // order by group, then artifact, then version
+        if (this.groupId.equals(other.getGroupId())) {
+            if (this.artifactId.equals(other.getArtifactId())) {
+                return this.version.compareTo(other.getVersion());
+            }
+            return this.artifactId.compareTo(other.getArtifactId());
+        }
+        return this.groupId.compareTo(other.getGroupId());
     }
 
     public String getGroupId() {
@@ -67,6 +94,14 @@ public class Usage {
         this.version = version;
     }
 
+    public String getPackaging() {
+        return packaging;
+    }
+
+    public void setPackaging(String packaging) {
+        this.packaging = packaging;
+    }
+
     public String getParentGroupId() {
         return parentGroupId;
     }
@@ -83,6 +118,14 @@ public class Usage {
         this.parentArtifactId = parentArtifactId;
     }
 
+    public String getParentVersion() {
+        return parentVersion;
+    }
+
+    public void setParentVersion(String parentVersion) {
+        this.parentVersion = parentVersion;
+    }
+
     public String getVersionUsed() {
         return versionUsed;
     }
@@ -91,12 +134,20 @@ public class Usage {
         this.versionUsed = versionUsed;
     }
 
-    public String getClassifier() {
-        return classifier;
+    public boolean isVersionInherited() {
+        return versionInherited;
     }
 
-    public void setClassifier(String classifier) {
-        this.classifier = classifier;
+    public void setVersionInherited(boolean versionInherited) {
+        this.versionInherited = versionInherited;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
 }

@@ -25,12 +25,12 @@
 				</executions>
 			</plugin>
 		</plugins>
-		<resources>
+<!-- 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>
-					<exclude>**/*.ftl</exclude>
+					<exclude>**/*.ftl</exclude>					
 				</excludes>
 			</resource>
 			<resource>
@@ -40,7 +40,7 @@
 					<include>**/*.ftl</include>
 				</includes>
 			</resource>
-		</resources>
+		</resources> -->
 	</build>
 	<dependencies>
 		<!-- Maven -->

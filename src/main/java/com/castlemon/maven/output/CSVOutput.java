@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
+import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,10 @@ public class CSVOutput {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVOutput.class);
 
-    String[] titles = { "Group", "Artifact", "Version", "Parent Group", "Parent Artifact", "Version Used", "Classifier",
-            "Scope" };
+    String[] titles = { "Group", "Artifact", "Version", "Packaging", "Parent Group", "Parent Artifact", "Version Used",
+            "Version Inherited", "Scope" };
 
-    public void writeCSVFile(List<Usage> usages, String outputDir) {
+    public void writeCSVFile(Collection<Usage> usages, String outputDir) {
         try {
             CSVWriter writer = new CSVWriter(
                     new OutputStreamWriter(new FileOutputStream(outputDir + File.separator + "usage.csv"), "UTF-8"));

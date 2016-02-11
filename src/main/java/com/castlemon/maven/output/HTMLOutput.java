@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -27,7 +27,7 @@ public class HTMLOutput {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HTMLOutput.class);
 
-    public void writeHTMLOutput(String group, String artifact, String directoryName, List<Usage> usages,
+    public void writeHTMLOutput(String group, String artifact, String directoryName, Collection<Usage> usages,
             String outputDir) {
         try {
             setupResources(outputDir);
@@ -51,26 +51,58 @@ public class HTMLOutput {
     }
 
     private void setupResources(String outputDir) {
-        File cssDir = new File(outputDir + File.separator + "css");
-        cssDir.mkdir();
+        setupCSSResources(outputDir);
+        setupJSResources(outputDir);
+        setupFontResources(outputDir);
+    }
+
+    private void setupCSSResources(String outputDir) {
+        File cssDir = makeDir("css", outputDir);
+        copyFile(cssDir, "bootstrap.min.css", "css");
+        copyFile(cssDir, "dataTables.bootstrap.min.css", "css");
+    }
+
+    private void setupJSResources(String outputDir) {
+        File jsDir = makeDir("js", outputDir);
+        copyFile(jsDir, "dataTables.bootstrap.min.js", "js");
+        copyFile(jsDir, "jquery-1.12.0.min.js", "js");
+        copyFile(jsDir, "jquery.dataTables.min.js", "js");
+    }
+
+    private void setupFontResources(String outputDir) {
+        File jsDir = makeDir("fonts", outputDir);
+        copyFile(jsDir, "glyphicons-halflings-regular.woff2", "fonts");
+        copyFile(jsDir, "glyphicons-halflings-regular.woff", "fonts");
+        copyFile(jsDir, "glyphicons-halflings-regular.ttf", "fonts");
+    }
+
+    private void copyFile(File cssDir, String fileName, String resourceDir) {
         InputStream resourceArchiveInputStream = null;
-        FileOutputStream cssOutStream = null;
+        FileOutputStream outStream = null;
+        String filePath = resourceDir + "/" + fileName;
+        System.out.println("filePath:" + filePath);
         try {
-            resourceArchiveInputStream = HTMLOutput.class.getResourceAsStream("css/bootstrap.min.css");
+            resourceArchiveInputStream = HTMLOutput.class.getResourceAsStream(filePath);
             if (resourceArchiveInputStream == null) {
-                resourceArchiveInputStream = HTMLOutput.class.getResourceAsStream("/css/bootstrap.min.css");
+                resourceArchiveInputStream = HTMLOutput.class.getResourceAsStream("/" + filePath);
             }
-            File file = new File(cssDir, "bootstrap.min.css");
-            cssOutStream = new FileOutputStream(file);
-            IOUtils.copy(resourceArchiveInputStream, cssOutStream);
+            File file = new File(cssDir, fileName);
+            outStream = new FileOutputStream(file);
+            IOUtils.copy(resourceArchiveInputStream, outStream);
         } catch (FileNotFoundException e) {
-            LOGGER.error("Cannot find css file", e);
+            LOGGER.error("Cannot find file " + filePath, e);
         } catch (IOException e) {
-            LOGGER.error("Error accessing css file", e);
+            LOGGER.error("Error accessing file " + filePath, e);
         } finally {
             IOUtils.closeQuietly(resourceArchiveInputStream);
-            IOUtils.closeQuietly(cssOutStream);
+            IOUtils.closeQuietly(outStream);
         }
+    }
+
+    private File makeDir(String dirName, String outputDir) {
+        File newDir = new File(outputDir + File.separator + dirName);
+        newDir.mkdir();
+        return newDir;
     }
 
 }

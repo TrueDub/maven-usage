@@ -2,20 +2,16 @@ package com.castlemon.maven.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +21,7 @@ import com.castlemon.maven.domain.Usage;
 import com.castlemon.maven.exception.InvalidFileException;
 import com.castlemon.maven.output.CSVOutput;
 import com.castlemon.maven.output.HTMLOutput;
+import com.castlemon.maven.processing.PomProcessor;
 
 @Component
 public class Controller {
@@ -35,12 +32,15 @@ public class Controller {
     @Autowired
     private HTMLOutput htmlOutput;
 
+    @Autowired
+    private PomProcessor pomProcessor;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
     public void executeAnalysis(String group, String artifact, String directoryName, List<String> outputFormats,
             String outputDirectory) {
-        File directory = null;
         // get reference to directory
+        File directory = null;
         try {
             directory = getDirectory(directoryName);
         } catch (FileNotFoundException e) {
@@ -50,14 +50,26 @@ public class Controller {
             LOGGER.error("specified file is not a directory", e);
             return;
         }
-        // loop through subdirs and check poms
+
+        // loop through subdirs and get poms
         Collection<File> results = processDirectory(directory);
+
+        // pre-process the poms into models and place in a map
+        Map<String, Model> models = pomProcessor.preProcessPoms(results);
+
+        // process each model
         List<Usage> usages = new ArrayList<Usage>();
-        for (File pom : results) {
-            usages.add(processPomFile(pom, group, artifact));
+        for (Model pom : models.values()) {
+            Usage usage = pomProcessor.processPomFile(pom, group, artifact);
+            if (usage != null) {
+                usages.add(usage);
+            }
         }
-        // remove nulls
-        usages.removeAll(Collections.singleton(null));
+        // sort usages
+        Collections.sort(usages);
+        // need to run through the usages, to check parent-supplied version numbers
+        pomProcessor.processParentVersions(usages, models, group, artifact);
+
         // write output
         if (outputFormats.contains("csv")) {
             csvOutput.writeCSVFile(usages, outputDirectory);
@@ -80,46 +92,6 @@ public class Controller {
     private Collection<File> processDirectory(File directory) {
         // find all files called *.pom in the specified directory and all subdirectories
         return FileUtils.listFiles(directory, new SuffixFileFilter(".pom"), TrueFileFilter.INSTANCE);
-    }
-
-    private Usage processPomFile(File pom, String group, String artifact) {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = null;
-        try {
-            model = reader.read(new FileReader(pom));
-            List<Dependency> dependencies = model.getDependencies();
-            if (model.getDependencyManagement() != null) {
-                dependencies.addAll(model.getDependencyManagement().getDependencies());
-            }
-            for (Dependency dependency : dependencies) {
-                if (dependency.getGroupId().equals(group) && dependency.getArtifactId().equals(artifact)) {
-                    // we have a match
-                    String groupId = model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId();
-                    String version = model.getVersion() != null ? model.getVersion() : model.getParent().getVersion();
-                    String versionUsed = dependency.getVersion() != null ? dependency.getVersion()
-                            : "Inherited from Parent";
-                    Usage usage = new Usage();
-                    usage.setGroupId(groupId);
-                    usage.setArtifactId(model.getArtifactId());
-                    usage.setVersion(version);
-                    if (model.getParent() != null) {
-                        usage.setParentGroupId(model.getParent().getGroupId());
-                        usage.setParentArtifactId(model.getParent().getArtifactId());
-                    }
-                    usage.setVersionUsed(versionUsed);
-                    usage.setClassifier(dependency.getClassifier());
-                    usage.setScope(dependency.getScope());
-                    return usage;
-                }
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());
-        } catch (IOException e) {
-            LOGGER.error("unable to read pom file: " + pom.getAbsolutePath());
-        } catch (XmlPullParserException e) {
-            LOGGER.error("unable to parse pom file: " + pom.getAbsolutePath());
-        }
-        return null;
     }
 
 }
