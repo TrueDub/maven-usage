@@ -20,14 +20,11 @@ public class CSVOutput {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVOutput.class);
 
-    String[] titles = { "Group", "Artifact", "Version", "Packaging", "Parent Group", "Parent Artifact", "Version Used",
-            "Version Inherited", "Scope" };
-
     public void writeCSVFile(Collection<Usage> usages, String outputDir) {
         try {
             CSVWriter writer = new CSVWriter(
                     new OutputStreamWriter(new FileOutputStream(outputDir + File.separator + "usage.csv"), "UTF-8"));
-            writer.writeNext(titles);
+            writer.writeNext(Usage.getCSVTitles());
             for (Usage usage : usages) {
                 writer.writeNext(usage.getCSVString());
             }

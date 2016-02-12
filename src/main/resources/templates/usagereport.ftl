@@ -8,7 +8,9 @@
 <script src='js/dataTables.bootstrap.min.js'></script>
 <script>
 	$(document).ready(function() {
-		$('#usageTable').DataTable();
+		$('#usageTable').DataTable({
+			"paging" : false
+		});
 	});
 </script>
 <title>Usage Report</title>
@@ -50,7 +52,6 @@
 							<th>Parent Group</th>
 							<th>Parent Artifact</th>
 							<th>Version Used</th>
-							<th>Inherited</th>
 							<th>Scope</th>
 						</tr>
 					</thead>
@@ -66,7 +67,6 @@
 							<td><#if
 								usage.parentArtifactId??>${usage.parentArtifactId}<#else>&nbsp;</#if></td>
 							<td>${usage.versionUsed}</td>
-							<td>${usage.versionInherited?string('Yes', 'No')}</td>
 							<td><#if usage.scope??>${usage.scope}<#else>&nbsp;</#if></td>
 						</tr>
 						</#list>

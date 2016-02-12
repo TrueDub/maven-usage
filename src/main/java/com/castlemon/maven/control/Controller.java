@@ -2,16 +2,13 @@ package com.castlemon.maven.control;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
-import org.apache.maven.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,21 +51,11 @@ public class Controller {
         // loop through subdirs and get poms
         Collection<File> results = processDirectory(directory);
 
-        // pre-process the poms into models and place in a map
-        Map<String, Model> models = pomProcessor.preProcessPoms(results);
+        // process the poms into models
+        List<Usage> usages = pomProcessor.processPoms(results, group, artifact, outputDirectory);
 
-        // process each model
-        List<Usage> usages = new ArrayList<Usage>();
-        for (Model pom : models.values()) {
-            Usage usage = pomProcessor.processPomFile(pom, group, artifact);
-            if (usage != null) {
-                usages.add(usage);
-            }
-        }
         // sort usages
         Collections.sort(usages);
-        // need to run through the usages, to check parent-supplied version numbers
-        pomProcessor.processParentVersions(usages, models, group, artifact);
 
         // write output
         if (outputFormats.contains("csv")) {

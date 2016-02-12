@@ -29,13 +29,17 @@ public class Usage implements Comparable<Usage> {
      */
     private String versionUsed;
 
-    private boolean versionInherited;
-
     private String scope;
+
+    public static String[] getCSVTitles() {
+        String[] titles = { "Group", "Artifact", "Version", "Packaging", "Parent Group", "Parent Artifact",
+                "Version Used", "Scope" };
+        return titles;
+    }
 
     public String[] getCSVString() {
         String[] fields = { groupId, artifactId, version, packaging, parentGroupId, parentArtifactId, versionUsed,
-                Boolean.toString(versionInherited), scope };
+                scope };
         return fields;
     }
 
@@ -132,14 +136,6 @@ public class Usage implements Comparable<Usage> {
 
     public void setVersionUsed(String versionUsed) {
         this.versionUsed = versionUsed;
-    }
-
-    public boolean isVersionInherited() {
-        return versionInherited;
-    }
-
-    public void setVersionInherited(boolean versionInherited) {
-        this.versionInherited = versionInherited;
     }
 
     public String getScope() {

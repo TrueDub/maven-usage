@@ -80,7 +80,6 @@ public class HTMLOutput {
         InputStream resourceArchiveInputStream = null;
         FileOutputStream outStream = null;
         String filePath = resourceDir + "/" + fileName;
-        System.out.println("filePath:" + filePath);
         try {
             resourceArchiveInputStream = HTMLOutput.class.getResourceAsStream(filePath);
             if (resourceArchiveInputStream == null) {

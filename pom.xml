@@ -25,22 +25,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-<!-- 		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>**/*.ftl</exclude>					
-				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>**/*.ftl</include>
-				</includes>
-			</resource>
-		</resources> -->
 	</build>
 	<dependencies>
 		<!-- Maven -->
@@ -48,6 +32,11 @@
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-model</artifactId>
 			<version>3.3.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.shared</groupId>
+			<artifactId>maven-invoker</artifactId>
+			<version>2.2</version>
 		</dependency>
 		<!-- Spring -->
 		<dependency>
