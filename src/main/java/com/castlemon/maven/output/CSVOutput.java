@@ -6,12 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.castlemon.maven.domain.RunData;
 import com.castlemon.maven.domain.Usage;
 import com.opencsv.CSVWriter;
 
@@ -20,21 +20,21 @@ public class CSVOutput {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CSVOutput.class);
 
-    public void writeCSVFile(Collection<Usage> usages, String outputDir) {
+    public void writeCSVFile(RunData runData) {
         try {
-            CSVWriter writer = new CSVWriter(
-                    new OutputStreamWriter(new FileOutputStream(outputDir + File.separator + "usage.csv"), "UTF-8"));
+            CSVWriter writer = new CSVWriter(new OutputStreamWriter(
+                    new FileOutputStream(runData.getOutputDirectory() + File.separator + "usage.csv"), "UTF-8"));
             writer.writeNext(Usage.getCSVTitles());
-            for (Usage usage : usages) {
+            for (Usage usage : runData.getUsages()) {
                 writer.writeNext(usage.getCSVString());
             }
             writer.close();
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("encoding problem writing CSV to " + outputDir, e);
+            LOGGER.error("encoding problem writing CSV to " + runData.getOutputDirectory(), e);
         } catch (FileNotFoundException e) {
-            LOGGER.error("could not find " + outputDir, e);
+            LOGGER.error("could not find " + runData.getOutputDirectory(), e);
         } catch (IOException e) {
-            LOGGER.error("could not write CSV to " + outputDir, e);
+            LOGGER.error("could not write CSV to " + runData.getOutputDirectory(), e);
         }
     }
 

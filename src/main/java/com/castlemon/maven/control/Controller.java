@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.castlemon.maven.domain.Usage;
+import com.castlemon.maven.domain.RunData;
 import com.castlemon.maven.exception.InvalidFileException;
 import com.castlemon.maven.output.CSVOutput;
 import com.castlemon.maven.output.HTMLOutput;
@@ -34,12 +34,12 @@ public class Controller {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
-    public void executeAnalysis(String group, String artifact, String directoryName, List<String> outputFormats,
-            String outputDirectory) {
+    public void executeAnalysis(RunData runData) {
+        Date startTime = new Date();
         // get reference to directory
         File directory = null;
         try {
-            directory = getDirectory(directoryName);
+            directory = getDirectory(runData.getSearchDirectory());
         } catch (FileNotFoundException e) {
             LOGGER.error("cannot find specified directory", e);
             return;
@@ -50,19 +50,28 @@ public class Controller {
 
         // loop through subdirs and get poms
         Collection<File> results = processDirectory(directory);
+        runData.setPomsRead(results.size());
 
         // process the poms into models
-        List<Usage> usages = pomProcessor.processPoms(results, group, artifact, outputDirectory);
+        pomProcessor.processPoms(runData, results);
+
+        // remove nulls
+        runData.getUsages().removeAll(Collections.singleton(null));
 
         // sort usages
-        Collections.sort(usages);
+        Collections.sort(runData.getUsages());
+
+        // calculcate timing
+        Date endTime = new Date();
+        long elapsedTime = endTime.getTime() - startTime.getTime();
+        runData.setExecutionTimeInMillis(elapsedTime);
 
         // write output
-        if (outputFormats.contains("csv")) {
-            csvOutput.writeCSVFile(usages, outputDirectory);
+        if (runData.getOutputFormats().contains("csv")) {
+            csvOutput.writeCSVFile(runData);
         }
-        if (outputFormats.contains("html")) {
-            htmlOutput.writeHTMLOutput(group, artifact, directoryName, usages, outputDirectory);
+        if (runData.getOutputFormats().contains("html")) {
+            htmlOutput.writeHTMLOutput(runData);
         }
     }
 

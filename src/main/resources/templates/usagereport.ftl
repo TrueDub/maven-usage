@@ -20,26 +20,55 @@
 	<div>
 		<h3>Item searched for:</h3>
 		<div class="row">
-			<div class="col-md-3 col-md-offset-2">
-				<strong>Group:</strong>
+			<div class="col-md-4 col-md-offset-4">
+				<table class="table table-bordered">
+					<tr>
+						<td><strong>Group:</strong></td>
+						<td>${runData.group}</td>
+					</tr>
+					<tr>
+						<td><strong>Artifact:</strong></td>
+						<td>${runData.artifact}</td>
+					</tr>
+					<tr>
+						<td><strong>Directory searched:</strong></td>
+						<td>${runData.searchDirectory}</td>
+					</tr>
+				</table>
 			</div>
-			<div class="col-md-3 col-md-offset-2">${group}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 col-md-offset-2">
-				<strong>Artifact:</strong>
-			</div>
-			<div class="col-md-3 col-md-offset-2">${artifact}</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 col-md-offset-2">
-				<strong>Directory searched:</strong>
-			</div>
-			<div class="col-md-3 col-md-offset-2">${directoryName}</div>
 		</div>
 	</div>
 	<div>
-		<h3>Search Results</h3>
+		<h3>Execution statistics:</h3>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<table class="table table-bordered">
+					<tr>
+						<td><strong>Time taken:</strong></td>
+						<td>${runData.formattedElapsedTime}</td>
+					</tr>
+					<tr>
+						<td><strong>POMs read:</strong></td>
+						<td>${runData.pomsRead}</td>
+					</tr>
+					<tr>
+						<td><strong>POMs reported on:</strong></td>
+						<td>${runData.pomsProcessed}</td>
+					</tr>
+					<tr>
+						<td><strong>POMs not reported on:</strong></td>
+						<td>${runData.pomsNotProcessed} (packaging of "pom")</td>
+					</tr>
+					<tr>
+						<td><strong>POMs with error:</strong></td>
+						<td>${runData.pomsReadError}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div>
+		<h3>Search Results:</h3>
 		<div class="row">
 			<div class="col-md-12">
 				<table id="usageTable" class="table table-striped table-bordered">
@@ -56,7 +85,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<#list usages as usage>
+						<#list runData.usages as usage>
 						<tr>
 							<td>${usage.groupId}</td>
 							<td>${usage.artifactId}</td>
@@ -72,6 +101,28 @@
 						</#list>
 					</tbody>
 				</table>
+			</div>
+		</div>
+	</div>
+	<div>
+		<h3>POMs not processed due to error:</h3>
+		<div class="row">
+			<div class="col-md-12">
+				<ul>
+					<#list runData.pomsInError as pom>
+					<li>${pom}</li> </#list>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div>
+		<h3>Parent or Aggregator POMs (not processed):</h3>
+		<div class="row">
+			<div class="col-md-12">
+				<ul>
+					<#list runData.pomsNotToBeProcessed as otherPom>
+					<li>${otherPom}</li> </#list>
+				</ul>
 			</div>
 		</div>
 	</div>

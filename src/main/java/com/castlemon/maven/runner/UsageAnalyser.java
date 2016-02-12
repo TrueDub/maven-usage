@@ -1,7 +1,6 @@
 package com.castlemon.maven.runner;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 import com.castlemon.maven.control.Controller;
+import com.castlemon.maven.domain.RunData;
 
 public class UsageAnalyser {
 
@@ -36,12 +36,13 @@ public class UsageAnalyser {
             applicationContext.register(Config.class);
             applicationContext.refresh();
             Controller controller = (Controller) applicationContext.getBean("controller");
-            String group = clps.getProperty("group");
-            String artifact = clps.getProperty("artifact");
-            String searchDir = clps.getProperty("searchDir");
-            List<String> outputFormat = Arrays.asList(clps.getProperty("outputFormat").split(","));
-            String outputDirectory = clps.getProperty("outputDirectory");
-            controller.executeAnalysis(group, artifact, searchDir, outputFormat, outputDirectory);
+            RunData runData = new RunData();
+            runData.setGroup(clps.getProperty("group"));
+            runData.setArtifact(clps.getProperty("artifact"));
+            runData.setSearchDirectory(clps.getProperty("searchDir"));
+            runData.setOutputFormats(Arrays.asList(clps.getProperty("outputFormat").split(",")));
+            runData.setOutputDirectory(clps.getProperty("outputDirectory"));
+            controller.executeAnalysis(runData);
             applicationContext.close();
             LOGGER.info("Analysis run complete");
         }
