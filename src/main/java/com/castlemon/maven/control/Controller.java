@@ -19,6 +19,7 @@ import com.castlemon.maven.exception.InvalidFileException;
 import com.castlemon.maven.output.CSVOutput;
 import com.castlemon.maven.output.HTMLOutput;
 import com.castlemon.maven.processing.PomProcessor;
+import com.castlemon.maven.processing.StatsGenerator;
 
 @Component
 public class Controller {
@@ -31,6 +32,9 @@ public class Controller {
 
     @Autowired
     private PomProcessor pomProcessor;
+
+    @Autowired
+    private StatsGenerator statsGenerator;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
@@ -60,6 +64,9 @@ public class Controller {
 
         // sort usages
         Collections.sort(runData.getUsages());
+
+        // calculate stats
+        statsGenerator.generateStats(runData);
 
         // calculcate timing
         Date endTime = new Date();

@@ -59,11 +59,9 @@ public class PomProcessor {
                 if (effectivePom != null) {
                     Model effectiveModel = reader.read(new FileReader(effectivePom));
                     usages.add(processPomFile(effectiveModel, runData.getGroup(), runData.getArtifact()));
-                    effectivePom.delete();
-                    effectivePom = null;
                 }
                 // clean up temp dir
-                tempPom.delete();
+                FileUtils.deleteQuietly(tempPom);
                 tempPom = null;
             } catch (FileNotFoundException e) {
                 LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());

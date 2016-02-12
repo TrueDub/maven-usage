@@ -68,6 +68,29 @@
 		</div>
 	</div>
 	<div>
+		<h3>Version statistics:</h3>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Version</th>
+							<th>Usage Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#list runData.versionCounts?keys as version>
+						<tr>
+							<td>${version}</td>
+							<td>${runData.versionCounts[version]}</td>
+						</tr>
+						</#list>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div>
 		<h3>Search Results:</h3>
 		<div class="row">
 			<div class="col-md-12">
