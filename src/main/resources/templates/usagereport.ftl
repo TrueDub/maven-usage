@@ -100,9 +100,6 @@
 							<th>Group</th>
 							<th>Artifact</th>
 							<th>Version</th>
-							<th>Packaging</th>
-							<th>Parent Group</th>
-							<th>Parent Artifact</th>
 							<th>Version Used</th>
 							<th>Scope</th>
 						</tr>
@@ -113,11 +110,6 @@
 							<td>${usage.groupId}</td>
 							<td>${usage.artifactId}</td>
 							<td>${usage.version}</td>
-							<td>${usage.packaging}</td>
-							<td><#if
-								usage.parentGroupId??>${usage.parentGroupId}<#else>&nbsp;</#if></td>
-							<td><#if
-								usage.parentArtifactId??>${usage.parentArtifactId}<#else>&nbsp;</#if></td>
 							<td>${usage.versionUsed}</td>
 							<td><#if usage.scope??>${usage.scope}<#else>&nbsp;</#if></td>
 						</tr>
