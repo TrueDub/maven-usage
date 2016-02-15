@@ -27,6 +27,7 @@ import org.apache.maven.shared.invoker.SystemOutHandler;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.castlemon.maven.control.Controller;
@@ -35,6 +36,9 @@ import com.castlemon.maven.domain.Usage;
 
 @Component
 public class PomProcessor {
+
+    @Autowired
+    private AetherProcessor aetherProcessor;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
@@ -51,6 +55,9 @@ public class PomProcessor {
                     runData.getPomsNotToBeProcessed().add(pom.getAbsolutePath());
                     continue;
                 }
+                String groupId = model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId();
+                String latestVersion = aetherProcessor.getLatestVersion(groupId, model.getArtifactId());
+                aetherProcessor.getDirectDependencies(groupId, model.getArtifactId(), latestVersion);
                 // copy pom to temp dir
                 File tempPom = copyFile(pom, tempDir);
                 // generate maven effective pom
@@ -166,5 +173,24 @@ public class PomProcessor {
         }
         return null;
     }
+
+    /*
+     * protected MavenProject buildProjectModel(String groupId, String artifactId, String version) throws Exception {
+     * try { ProjectBuildingRequest configuration = new DefaultProjectBuildingRequest();
+     * configuration.setLocalRepository(localRepository);
+     * configuration.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
+     * configuration.setProcessPlugins(false);
+     * configuration.setRepositoryMerging(ProjectBuildingRequest.RepositoryMerging.REQUEST_DOMINANT); Properties
+     * properties = new Properties(); for (String key : session.getSystemProperties().keySet()) { properties.put(key,
+     * session.getSystemProperties().get(key)); } configuration.setSystemProperties(properties);
+     * configuration.setRepositorySession(session);
+     * 
+     * org.apache.maven.artifact.Artifact artifact = new org.apache.maven.artifact.DefaultArtifact(groupId, artifactId,
+     * version, "compile", "", "", new DefaultArtifactHandler());
+     * 
+     * ProjectBuilder projectBuilder = new DefaultProjectBuilder(); MavenProject project =
+     * projectBuilder.build(artifact, configuration).getProject(); return project; } catch (Exception ex) {
+     * LOGGER.error("error in buildProjectModel ", ex); } return null; }
+     */
 
 }
