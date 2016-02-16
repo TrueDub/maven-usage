@@ -44,6 +44,9 @@ public class PomProcessor {
                 if (descriptorResult != null) {
                     usages.add(processDescriptor(descriptorResult, runData, runData.getArtifact()));
                     runData.incrementPomsProcessed();
+                } else {
+                    runData.incrementPomsReadError();
+                    runData.getPomsInError().add(pom.getAbsolutePath());
                 }
             } catch (FileNotFoundException e) {
                 LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());
