@@ -56,12 +56,12 @@
 						<td>${runData.pomsProcessed}</td>
 					</tr>
 					<tr>
-						<td><strong>POMs not reported on:</strong></td>
-						<td>${runData.pomsNotProcessed} (packaging of "pom")</td>
-					</tr>
-					<tr>
 						<td><strong>POMs with error:</strong></td>
 						<td>${runData.pomsReadError}</td>
+					</tr>
+					<tr>
+						<td><strong>Occurrences found:</strong></td>
+						<td>${runData.occurrencesFound}</td>
 					</tr>
 				</table>
 			</div>
@@ -126,17 +126,6 @@
 				<ul>
 					<#list runData.pomsInError as pom>
 					<li>${pom}</li> </#list>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div>
-		<h3>Parent or Aggregator POMs (not processed):</h3>
-		<div class="row">
-			<div class="col-md-12">
-				<ul>
-					<#list runData.pomsNotToBeProcessed as otherPom>
-					<li>${otherPom}</li> </#list>
 				</ul>
 			</div>
 		</div>

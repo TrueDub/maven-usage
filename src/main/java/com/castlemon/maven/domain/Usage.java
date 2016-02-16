@@ -16,14 +16,6 @@ public class Usage implements Comparable<Usage> {
 
     private String version;
 
-    private String packaging;
-
-    private String parentGroupId;
-
-    private String parentArtifactId;
-
-    private String parentVersion;
-
     /*
      * All the fields below refer to the artifact being used
      */
@@ -32,14 +24,12 @@ public class Usage implements Comparable<Usage> {
     private String scope;
 
     public static String[] getCSVTitles() {
-        String[] titles = { "Group", "Artifact", "Version", "Packaging", "Parent Group", "Parent Artifact",
-                "Version Used", "Scope" };
+        String[] titles = { "Group", "Artifact", "Version", "Version Used", "Scope" };
         return titles;
     }
 
     public String[] getCSVString() {
-        String[] fields = { groupId, artifactId, version, packaging, parentGroupId, parentArtifactId, versionUsed,
-                scope };
+        String[] fields = { groupId, artifactId, version, versionUsed, scope };
         return fields;
     }
 
@@ -50,16 +40,6 @@ public class Usage implements Comparable<Usage> {
         builder.append(this.artifactId);
         builder.append(":");
         builder.append(this.version);
-        return builder.toString();
-    }
-
-    public String getParentIdentifier() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.parentGroupId);
-        builder.append(":");
-        builder.append(this.parentArtifactId);
-        builder.append(":");
-        builder.append(this.parentVersion);
         return builder.toString();
     }
 
@@ -96,38 +76,6 @@ public class Usage implements Comparable<Usage> {
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public String getPackaging() {
-        return packaging;
-    }
-
-    public void setPackaging(String packaging) {
-        this.packaging = packaging;
-    }
-
-    public String getParentGroupId() {
-        return parentGroupId;
-    }
-
-    public void setParentGroupId(String parentGroupId) {
-        this.parentGroupId = parentGroupId;
-    }
-
-    public String getParentArtifactId() {
-        return parentArtifactId;
-    }
-
-    public void setParentArtifactId(String parentArtifactId) {
-        this.parentArtifactId = parentArtifactId;
-    }
-
-    public String getParentVersion() {
-        return parentVersion;
-    }
-
-    public void setParentVersion(String parentVersion) {
-        this.parentVersion = parentVersion;
     }
 
     public String getVersionUsed() {

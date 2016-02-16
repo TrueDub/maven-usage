@@ -31,10 +31,6 @@ public class RunData {
 
     private int pomsProcessed;
 
-    private int pomsNotProcessed;
-
-    private List<String> pomsNotToBeProcessed = new ArrayList<String>();
-
     private int pomsReadError;
 
     private List<String> pomsInError = new ArrayList<String>();
@@ -45,6 +41,10 @@ public class RunData {
 
     // **********************************************
 
+    public int getOccurrencesFound() {
+        return usages.size();
+    }
+
     public String getFormattedElapsedTime() {
         return String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(executionTimeInMillis),
                 TimeUnit.MILLISECONDS.toSeconds(executionTimeInMillis)
@@ -53,10 +53,6 @@ public class RunData {
 
     public void incrementPomsProcessed() {
         pomsProcessed++;
-    }
-
-    public void incrementPomsNotProcessed() {
-        pomsNotProcessed++;
     }
 
     public void incrementPomsReadError() {
@@ -157,22 +153,6 @@ public class RunData {
 
     public void setVersionCounts(Map<String, Integer> versionCounts) {
         this.versionCounts = versionCounts;
-    }
-
-    public int getPomsNotProcessed() {
-        return pomsNotProcessed;
-    }
-
-    public void setPomsNotProcessed(int pomsNotProcessed) {
-        this.pomsNotProcessed = pomsNotProcessed;
-    }
-
-    public List<String> getPomsNotToBeProcessed() {
-        return pomsNotToBeProcessed;
-    }
-
-    public void setPomsNotToBeProcessed(List<String> pomsNotToBeProcessed) {
-        this.pomsNotToBeProcessed = pomsNotToBeProcessed;
     }
 
 }

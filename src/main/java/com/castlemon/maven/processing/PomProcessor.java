@@ -37,39 +37,36 @@ public class PomProcessor {
         for (File pom : pomFiles) {
             try {
                 Model model = reader.read(new FileReader(pom));
-                if (model.getPackaging().equals("pom")) {
-                    // ignore parent and aggregator poms
-                    runData.incrementPomsNotProcessed();
-                    runData.getPomsNotToBeProcessed().add(pom.getAbsolutePath());
-                    continue;
-                }
                 String groupId = model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId();
                 String version = model.getVersion() != null ? model.getVersion() : model.getParent().getVersion();
                 ArtifactDescriptorResult descriptorResult = aetherProcessor.getDirectDependencies(groupId,
                         model.getArtifactId(), version);
                 if (descriptorResult != null) {
+                    usages.add(processDescriptor(descriptorResult, runData, runData.getArtifact()));
                     runData.incrementPomsProcessed();
-                    usages.add(processDescriptor(descriptorResult, runData.getGroup(), runData.getArtifact()));
-                } else {
-                    runData.incrementPomsReadError();
-                    runData.getPomsInError().add(pom.getAbsolutePath());
                 }
             } catch (FileNotFoundException e) {
                 LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());
+                runData.incrementPomsReadError();
+                runData.getPomsInError().add(pom.getAbsolutePath());
             } catch (IOException e) {
                 LOGGER.error("unable to read pom file: " + pom.getAbsolutePath());
+                runData.incrementPomsReadError();
+                runData.getPomsInError().add(pom.getAbsolutePath());
             } catch (XmlPullParserException e) {
                 LOGGER.error("unable to parse pom file: " + pom.getAbsolutePath());
+                runData.incrementPomsReadError();
+                runData.getPomsInError().add(pom.getAbsolutePath());
             }
         }
         runData.setUsages(usages);
     }
 
-    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, String group, String artifact) {
+    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, RunData runData, String artifact) {
         Artifact artifactBeingProcessed = descriptorResult.getArtifact();
         List<Dependency> dependencies = descriptorResult.getDependencies();
         for (Dependency dependency : dependencies) {
-            if (dependency.getArtifact().getGroupId().equals(group)
+            if (dependency.getArtifact().getGroupId().equals(runData.getGroup())
                     && dependency.getArtifact().getArtifactId().equals(artifact)) {
                 // we have a match
                 Usage usage = new Usage();
