@@ -37,7 +37,7 @@ public class RunData {
 
     // stats on processed usages
 
-    Map<String, Integer> versionCounts = new TreeMap<String, Integer>();
+    private Map<String, Integer> versionCounts = new TreeMap<String, Integer>();
 
     // **********************************************
 

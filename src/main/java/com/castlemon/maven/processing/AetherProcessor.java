@@ -40,8 +40,7 @@ public class AetherProcessor {
         try {
             rangeResult = system.resolveVersionRange(session, rangeRequest);
         } catch (VersionRangeResolutionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error("unable to determine latest version for " + groupId + ":" + artifactId, e);
         }
         Version newestVersion = rangeResult.getHighestVersion();
         return newestVersion.toString();
