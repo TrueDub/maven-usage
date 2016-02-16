@@ -24,15 +24,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.castlemon.maven.control.Controller;
+import com.castlemon.maven.domain.RunData;
 
 @Component
 public class AetherProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
-    public String getLatestVersion(String groupId, String artifactId) {
+    public String getLatestVersion(String groupId, String artifactId, RunData runData) {
         RepositorySystem system = newRepositorySystem();
-        RepositorySystemSession session = newSession(system);
+        RepositorySystemSession session = newSession(system, runData);
         Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + ":[0,)");
         VersionRangeRequest rangeRequest = new VersionRangeRequest();
         rangeRequest.setArtifact(artifact);
@@ -46,9 +47,10 @@ public class AetherProcessor {
         return newestVersion.toString();
     }
 
-    public ArtifactDescriptorResult getDirectDependencies(String groupId, String artifactId, String version) {
+    public ArtifactDescriptorResult getDirectDependencies(String groupId, String artifactId, String version,
+            RunData runData) {
         RepositorySystem system = newRepositorySystem();
-        RepositorySystemSession session = newSession(system);
+        RepositorySystemSession session = newSession(system, runData);
         Artifact artifact = new DefaultArtifact(groupId + ":" + artifactId + ":" + version);
         ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
         descriptorRequest.setArtifact(artifact);
@@ -62,12 +64,10 @@ public class AetherProcessor {
         return null;
     }
 
-    private RepositorySystemSession newSession(RepositorySystem system) {
+    private RepositorySystemSession newSession(RepositorySystem system, RunData runData) {
         DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
-
-        LocalRepository localRepo = new LocalRepository("C:\\Users\\gallagherji\\.m2\\repository");
+        LocalRepository localRepo = new LocalRepository(runData.getRepo());
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
-
         return session;
     }
 
@@ -75,7 +75,6 @@ public class AetherProcessor {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
         locator.addService(RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class);
         locator.addService(TransporterFactory.class, FileTransporterFactory.class);
-        // locator.addService(TransporterFactory.class, HttpTransporterFactory.class);
         return locator.getService(RepositorySystem.class);
     }
 

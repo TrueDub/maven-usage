@@ -1,6 +1,11 @@
 package com.castlemon.maven.runner;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,33 +24,48 @@ public class UsageAnalyser {
     }
 
     public static void main(String[] args) {
-        if (args.length != 5) {
+        if (args.length != 1) {
             LOGGER.error("Incorrect parameters submitted to job");
-            LOGGER.error(
-                    "Usage: java -jar maven-usage.jar --group=<groupname> --artifact=<artifactName> --searchDir=<path of directory to be searched> --outputFormat=<xml,html> --outputDirectory=<path of directory for results>");
+            LOGGER.error("Usage: java -jar maven-usage.jar --config=<path to config file>");
         } else {
             // set up Spring
             SimpleCommandLinePropertySource clps = new SimpleCommandLinePropertySource(args);
-            assert clps.containsProperty("group") == true;
-            assert clps.containsProperty("artifact") == true;
-            assert clps.containsProperty("searchDir") == true;
-            assert clps.containsProperty("outputFormat") == true;
-            assert clps.containsProperty("outputDirectory") == true;
+            assert clps.containsProperty("config") == true;
             AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
             applicationContext.getEnvironment().getPropertySources().addFirst(clps);
             applicationContext.register(Config.class);
             applicationContext.refresh();
             Controller controller = (Controller) applicationContext.getBean("controller");
-            RunData runData = new RunData();
-            runData.setGroup(clps.getProperty("group"));
-            runData.setArtifact(clps.getProperty("artifact"));
-            runData.setSearchDirectory(clps.getProperty("searchDir"));
-            runData.setOutputFormats(Arrays.asList(clps.getProperty("outputFormat").split(",")));
-            runData.setOutputDirectory(clps.getProperty("outputDirectory"));
-            controller.executeAnalysis(runData);
+            RunData runData = readProperties(clps.getProperty("config"));
+            if (runData != null) {
+                controller.executeAnalysis(runData);
+            }
             applicationContext.close();
             LOGGER.info("Analysis run complete");
         }
+    }
+
+    private static RunData readProperties(String configFileName) {
+        Properties prop = new Properties();
+        InputStream input = null;
+        try {
+            input = new FileInputStream(configFileName);
+            prop.load(input);
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Cannot find config file - " + configFileName, e);
+            return null;
+        } catch (IOException e) {
+            LOGGER.error("Cannot load config file - " + configFileName, e);
+            return null;
+        }
+        RunData runData = new RunData();
+        runData.setGroup(prop.getProperty("group"));
+        runData.setArtifact(prop.getProperty("artifact"));
+        runData.setSearchDirectory(prop.getProperty("searchDir"));
+        runData.setOutputFormats(Arrays.asList(prop.getProperty("outputFormat").split(",")));
+        runData.setOutputDirectory(prop.getProperty("outputDirectory"));
+        runData.setRepo(prop.getProperty("repo"));
+        return runData;
     }
 
 }

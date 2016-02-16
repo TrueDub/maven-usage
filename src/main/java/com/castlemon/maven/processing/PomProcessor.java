@@ -40,7 +40,7 @@ public class PomProcessor {
                 String groupId = model.getGroupId() != null ? model.getGroupId() : model.getParent().getGroupId();
                 String version = model.getVersion() != null ? model.getVersion() : model.getParent().getVersion();
                 ArtifactDescriptorResult descriptorResult = aetherProcessor.getDirectDependencies(groupId,
-                        model.getArtifactId(), version);
+                        model.getArtifactId(), version, runData);
                 if (descriptorResult != null) {
                     usages.add(processDescriptor(descriptorResult, runData, runData.getArtifact()));
                     runData.incrementPomsProcessed();

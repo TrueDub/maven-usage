@@ -19,6 +19,8 @@ public class RunData {
 
     private String outputDirectory;
 
+    private String repo;
+
     // run data
 
     private List<Usage> usages = new ArrayList<Usage>();
@@ -153,6 +155,14 @@ public class RunData {
 
     public void setVersionCounts(Map<String, Integer> versionCounts) {
         this.versionCounts = versionCounts;
+    }
+
+    public String getRepo() {
+        return repo;
+    }
+
+    public void setRepo(String repo) {
+        this.repo = repo;
     }
 
 }
