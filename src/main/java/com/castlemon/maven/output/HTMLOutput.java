@@ -27,6 +27,11 @@ public class HTMLOutput {
     private static final Logger LOGGER = LoggerFactory.getLogger(HTMLOutput.class);
 
     public void writeHTMLOutput(RunData runData) {
+        File checkDir = new File(runData.getOutputDirectory());
+        if (!checkDir.exists()) {
+            LOGGER.error("Output directory does not exist: " + runData.getOutputDirectory());
+            return;
+        }
         try {
             setupResources(runData.getOutputDirectory());
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
@@ -34,11 +39,6 @@ public class HTMLOutput {
             cfg.setDefaultEncoding("UTF-8");
             Map<String, Object> context = new HashMap<String, Object>();
             context.put("runData", runData);
-            /*
-             * context.put("artifact", runData.getArtifact()); context.put("directoryName", runData.getSearchDir());
-             * context.put("elapsedTime", runData.getExecutionTimeInMillis()); context.put("usages",
-             * runData.getUsages());
-             */
             Template template = cfg.getTemplate("usagereport.ftl");
             File file = new File(runData.getOutputDirectory() + File.separator + "usagereport.html");
             Writer out = new OutputStreamWriter(new FileOutputStream(file));

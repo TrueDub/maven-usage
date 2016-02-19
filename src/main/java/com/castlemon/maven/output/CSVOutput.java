@@ -1,11 +1,9 @@
 package com.castlemon.maven.output;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +27,6 @@ public class CSVOutput {
                 writer.writeNext(usage.getCSVString());
             }
             writer.close();
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.error("encoding problem writing CSV to " + runData.getOutputDirectory(), e);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("could not find " + runData.getOutputDirectory(), e);
         } catch (IOException e) {
             LOGGER.error("could not write CSV to " + runData.getOutputDirectory(), e);
         }

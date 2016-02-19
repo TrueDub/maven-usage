@@ -23,13 +23,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.castlemon.maven.control.Controller;
 import com.castlemon.maven.domain.RunData;
 
 @Component
 public class AetherProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AetherProcessor.class);
 
     public String getLatestVersion(String groupId, String artifactId, RunData runData) {
         RepositorySystem system = newRepositorySystem();
@@ -42,6 +41,7 @@ public class AetherProcessor {
             rangeResult = system.resolveVersionRange(session, rangeRequest);
         } catch (VersionRangeResolutionException e) {
             LOGGER.error("unable to determine latest version for " + groupId + ":" + artifactId, e);
+            return null;
         }
         Version newestVersion = rangeResult.getHighestVersion();
         return newestVersion.toString();
