@@ -6,6 +6,8 @@ import static org.mockito.Mockito.verify;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -57,6 +59,14 @@ public class UsageAnalyserTest {
     public void teardown() {
         final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
         logger.detachAppender(mockAppender);
+    }
+
+    @Test
+    public void testPrivateConstructor() throws NoSuchMethodException, SecurityException, InstantiationException,
+            IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Constructor<UsageAnalyser> c = UsageAnalyser.class.getDeclaredConstructor();
+        c.setAccessible(true);
+        Assert.assertTrue(c.newInstance() instanceof UsageAnalyser);
     }
 
     @Test
