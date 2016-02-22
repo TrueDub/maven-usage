@@ -1,7 +1,6 @@
 package com.castlemon.maven.processing;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,16 +41,12 @@ public class PomProcessor {
                 ArtifactDescriptorResult descriptorResult = aetherProcessor.getDirectDependencies(groupId,
                         model.getArtifactId(), version, runData);
                 if (descriptorResult != null) {
-                    usages.add(processDescriptor(descriptorResult, runData, runData.getArtifact()));
+                    usages.add(processDescriptor(descriptorResult, runData));
                     runData.incrementPomsProcessed();
                 } else {
                     runData.incrementPomsReadError();
                     runData.getPomsInError().add(pom.getAbsolutePath());
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error("unable to find pom file: " + pom.getAbsolutePath());
-                runData.incrementPomsReadError();
-                runData.getPomsInError().add(pom.getAbsolutePath());
             } catch (IOException e) {
                 LOGGER.error("unable to read pom file: " + pom.getAbsolutePath());
                 runData.incrementPomsReadError();
@@ -65,12 +60,12 @@ public class PomProcessor {
         runData.setUsages(usages);
     }
 
-    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, RunData runData, String artifact) {
+    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, RunData runData) {
         Artifact artifactBeingProcessed = descriptorResult.getArtifact();
         List<Dependency> dependencies = descriptorResult.getDependencies();
         for (Dependency dependency : dependencies) {
             if (dependency.getArtifact().getGroupId().equals(runData.getGroup())
-                    && dependency.getArtifact().getArtifactId().equals(artifact)) {
+                    && dependency.getArtifact().getArtifactId().equals(runData.getArtifact())) {
                 // we have a match
                 Usage usage = new Usage();
                 usage.setGroupId(artifactBeingProcessed.getGroupId());

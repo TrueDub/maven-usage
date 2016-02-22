@@ -26,6 +26,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @RunWith(MockitoJUnitRunner.class)
 public class CSVOutputTest {
 
@@ -67,7 +68,6 @@ public class CSVOutputTest {
         Assert.assertTrue(report.exists());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testWriteCSVFileFileNotFoundException() throws Exception {
         RunData runData = new RunData();

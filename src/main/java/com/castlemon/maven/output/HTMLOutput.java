@@ -1,7 +1,6 @@
 package com.castlemon.maven.output;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,33 +49,33 @@ public class HTMLOutput {
         }
     }
 
-    private void setupResources(String outputDir) {
+    private void setupResources(String outputDir) throws IOException {
         setupCSSResources(outputDir);
         setupJSResources(outputDir);
         setupFontResources(outputDir);
     }
 
-    private void setupCSSResources(String outputDir) {
+    private void setupCSSResources(String outputDir) throws IOException {
         File cssDir = makeDir("css", outputDir);
         copyFile(cssDir, "bootstrap.min.css", "css");
         copyFile(cssDir, "dataTables.bootstrap.min.css", "css");
     }
 
-    private void setupJSResources(String outputDir) {
+    private void setupJSResources(String outputDir) throws IOException {
         File jsDir = makeDir("js", outputDir);
         copyFile(jsDir, "dataTables.bootstrap.min.js", "js");
         copyFile(jsDir, "jquery-1.12.0.min.js", "js");
         copyFile(jsDir, "jquery.dataTables.min.js", "js");
     }
 
-    private void setupFontResources(String outputDir) {
+    private void setupFontResources(String outputDir) throws IOException {
         File jsDir = makeDir("fonts", outputDir);
         copyFile(jsDir, "glyphicons-halflings-regular.woff2", "fonts");
         copyFile(jsDir, "glyphicons-halflings-regular.woff", "fonts");
         copyFile(jsDir, "glyphicons-halflings-regular.ttf", "fonts");
     }
 
-    private void copyFile(File cssDir, String fileName, String resourceDir) {
+    private void copyFile(File cssDir, String fileName, String resourceDir) throws IOException {
         InputStream resourceArchiveInputStream = null;
         FileOutputStream outStream = null;
         String filePath = resourceDir + "/" + fileName;
@@ -88,10 +87,6 @@ public class HTMLOutput {
             File file = new File(cssDir, fileName);
             outStream = new FileOutputStream(file);
             IOUtils.copy(resourceArchiveInputStream, outStream);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Cannot find file " + filePath, e);
-        } catch (IOException e) {
-            LOGGER.error("Error accessing file " + filePath, e);
         } finally {
             IOUtils.closeQuietly(resourceArchiveInputStream);
             IOUtils.closeQuietly(outStream);

@@ -31,6 +31,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import freemarker.template.Configuration;
 
+@SuppressWarnings({ "rawtypes", "unchecked" })
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ HTMLOutput.class, Configuration.class })
 public class HTMLOutputTest {
@@ -71,7 +72,6 @@ public class HTMLOutputTest {
         Assert.assertTrue(report.exists());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testWriteHTMLOutputDoesntExist() throws Exception {
         RunData runData = new RunData();
@@ -84,7 +84,6 @@ public class HTMLOutputTest {
         Assert.assertThat(loggingEvent.getFormattedMessage(), is("Output directory does not exist: fred"));
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testWriteHTMLOutputIOException() throws Exception {
         RunData runData = new RunData();
