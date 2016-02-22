@@ -1,7 +1,6 @@
 package com.castlemon.maven.runner;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -30,7 +29,6 @@ public class UsageAnalyser {
         } else {
             // set up Spring
             SimpleCommandLinePropertySource clps = new SimpleCommandLinePropertySource(args);
-            assert clps.containsProperty("config") == true;
             AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
             applicationContext.getEnvironment().getPropertySources().addFirst(clps);
             applicationContext.register(Config.class);
@@ -51,9 +49,6 @@ public class UsageAnalyser {
         try {
             input = new FileInputStream(configFileName);
             prop.load(input);
-        } catch (FileNotFoundException e) {
-            LOGGER.error("Cannot find config file - " + configFileName, e);
-            return null;
         } catch (IOException e) {
             LOGGER.error("Cannot load config file - " + configFileName, e);
             return null;
