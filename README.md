@@ -10,7 +10,9 @@ The user provides a group ID and artifact ID, and the utility scans the dependen
 
 The utility is executed using the following command:
 
-`java -jar maven-usage.jar --config=path to config file
+```
+java -jar maven-usage.jar --config=path to config file
+```
 
 This config file requires the following entries:
 
@@ -25,4 +27,4 @@ repo=<path of repo being searched> | Maven local repo
 
 An sample config file is available in the config directory.
 
-Logger tests from :http://bloodredsun.com/2014/06/03/checking-logback-based-logging-in-unit-tests/
+The code to test logging messages was adapted from the code supplied on http://bloodredsun.com/2014/06/03/checking-logback-based-logging-in-unit-tests/.
