@@ -41,7 +41,7 @@ public class PomProcessor {
                 ArtifactDescriptorResult descriptorResult = aetherProcessor.getDirectDependencies(groupId,
                         model.getArtifactId(), version, runData);
                 if (descriptorResult != null) {
-                    usages.add(processDescriptor(descriptorResult, runData));
+                    usages.add(processDescriptor(descriptorResult, runData, pom.getAbsolutePath()));
                     runData.incrementPomsProcessed();
                 } else {
                     runData.incrementPomsReadError();
@@ -60,7 +60,7 @@ public class PomProcessor {
         runData.setUsages(usages);
     }
 
-    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, RunData runData) {
+    private Usage processDescriptor(ArtifactDescriptorResult descriptorResult, RunData runData, String pomPath) {
         Artifact artifactBeingProcessed = descriptorResult.getArtifact();
         List<Dependency> dependencies = descriptorResult.getDependencies();
         for (Dependency dependency : dependencies) {
@@ -71,6 +71,7 @@ public class PomProcessor {
                 usage.setGroupId(artifactBeingProcessed.getGroupId());
                 usage.setArtifactId(artifactBeingProcessed.getArtifactId());
                 usage.setVersion(artifactBeingProcessed.getVersion());
+                usage.setPath(pomPath);
                 usage.setVersionUsed(dependency.getArtifact().getVersion());
                 usage.setScope(dependency.getScope());
                 return usage;

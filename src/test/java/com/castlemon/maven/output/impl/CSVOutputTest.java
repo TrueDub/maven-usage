@@ -1,4 +1,4 @@
-package com.castlemon.maven.output;
+package com.castlemon.maven.output.impl;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.verify;
@@ -63,7 +63,7 @@ public class CSVOutputTest {
         File outputDir = tempInputFolder.newFolder();
         runData.setOutputDirectory(outputDir.getAbsolutePath());
         CSVOutput csvOutput = new CSVOutput();
-        csvOutput.writeCSVFile(runData);
+        csvOutput.writeData(runData);
         File report = new File(runData.getOutputDirectory() + File.separator + "usage.csv");
         Assert.assertTrue(report.exists());
     }
@@ -72,7 +72,7 @@ public class CSVOutputTest {
     public void testWriteCSVFileFileNotFoundException() throws Exception {
         RunData runData = new RunData();
         CSVOutput csvOutput = new CSVOutput();
-        csvOutput.writeCSVFile(runData);
+        csvOutput.writeData(runData);
         verify(mockAppender).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         // Check log level is correct

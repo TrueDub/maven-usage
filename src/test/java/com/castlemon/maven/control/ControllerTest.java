@@ -13,8 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.castlemon.maven.domain.RunData;
-import com.castlemon.maven.output.CSVOutput;
-import com.castlemon.maven.output.HTMLOutput;
+import com.castlemon.maven.output.OutputFactory;
 import com.castlemon.maven.processing.PomProcessor;
 import com.castlemon.maven.processing.StatsGenerator;
 
@@ -28,10 +27,7 @@ public class ControllerTest {
     private StatsGenerator statsGenerator;
 
     @Mock
-    private HTMLOutput htmlOutput;
-
-    @Mock
-    private CSVOutput csvOutput;
+    private OutputFactory outputFactory;
 
     @Rule
     public TemporaryFolder tempInputFolder = new TemporaryFolder();
@@ -47,8 +43,7 @@ public class ControllerTest {
         File searchDir = tempInputFolder.newFolder();
         runData.setSearchDirectory(searchDir.getAbsolutePath());
         controller.executeAnalysis(runData);
-        Mockito.verify(csvOutput, Mockito.times(1)).writeCSVFile(Mockito.any(RunData.class));
-        Mockito.verify(htmlOutput, Mockito.times(1)).writeHTMLOutput(Mockito.any(RunData.class));
+        Mockito.verify(outputFactory, Mockito.times(2)).getOutput(Mockito.anyString());
     }
 
     @Test
@@ -57,9 +52,9 @@ public class ControllerTest {
         runData.getOutputFormats().add("csv");
         File searchDir = tempInputFolder.newFolder();
         runData.setSearchDirectory(searchDir.getAbsolutePath());
+        Mockito.when(outputFactory.getOutput(Mockito.anyString())).thenCallRealMethod();
         controller.executeAnalysis(runData);
-        Mockito.verify(csvOutput, Mockito.times(1)).writeCSVFile(Mockito.any(RunData.class));
-        Mockito.verify(htmlOutput, Mockito.times(0)).writeHTMLOutput(Mockito.any(RunData.class));
+        Mockito.verify(outputFactory, Mockito.times(1)).getOutput(Mockito.anyString());
     }
 
     @Test
@@ -69,8 +64,7 @@ public class ControllerTest {
         File searchDir = tempInputFolder.newFolder();
         runData.setSearchDirectory(searchDir.getAbsolutePath());
         controller.executeAnalysis(runData);
-        Mockito.verify(csvOutput, Mockito.times(0)).writeCSVFile(Mockito.any(RunData.class));
-        Mockito.verify(htmlOutput, Mockito.times(1)).writeHTMLOutput(Mockito.any(RunData.class));
+        Mockito.verify(outputFactory, Mockito.times(1)).getOutput(Mockito.anyString());
     }
 
     @Test
@@ -80,8 +74,7 @@ public class ControllerTest {
         runData.getOutputFormats().add("html");
         runData.setSearchDirectory("fred");
         controller.executeAnalysis(runData);
-        Mockito.verify(csvOutput, Mockito.times(0)).writeCSVFile(Mockito.any(RunData.class));
-        Mockito.verify(htmlOutput, Mockito.times(0)).writeHTMLOutput(Mockito.any(RunData.class));
+        Mockito.verify(outputFactory, Mockito.times(0)).getOutput(Mockito.anyString());
     }
 
     @Test
@@ -92,8 +85,7 @@ public class ControllerTest {
         File searchDir = tempInputFolder.newFile();
         runData.setSearchDirectory(searchDir.getAbsolutePath());
         controller.executeAnalysis(runData);
-        Mockito.verify(csvOutput, Mockito.times(0)).writeCSVFile(Mockito.any(RunData.class));
-        Mockito.verify(htmlOutput, Mockito.times(0)).writeHTMLOutput(Mockito.any(RunData.class));
+        Mockito.verify(outputFactory, Mockito.times(0)).getOutput(Mockito.anyString());
     }
 
 }

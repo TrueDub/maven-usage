@@ -1,4 +1,4 @@
-package com.castlemon.maven.output;
+package com.castlemon.maven.output.impl;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.verify;
@@ -68,7 +68,7 @@ public class HTMLOutputTest {
         File outputDir = tempInputFolder.newFolder();
         runData.setOutputDirectory(outputDir.getAbsolutePath());
         HTMLOutput htmlOutput = new HTMLOutput();
-        htmlOutput.writeHTMLOutput(runData);
+        htmlOutput.writeData(runData);
         File report = new File(runData.getOutputDirectory() + File.separator + "usagereport.html");
         Assert.assertTrue(report.exists());
     }
@@ -78,7 +78,7 @@ public class HTMLOutputTest {
         RunData runData = new RunData();
         runData.setOutputDirectory("fred");
         HTMLOutput htmlOutput = new HTMLOutput();
-        htmlOutput.writeHTMLOutput(runData);
+        htmlOutput.writeData(runData);
         verify(mockAppender).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.ERROR));
@@ -96,7 +96,7 @@ public class HTMLOutputTest {
         Mockito.when(configuration.getTemplate(Mockito.anyString())).thenThrow(new IOException());
         PowerMockito.whenNew(Configuration.class).withAnyArguments().thenReturn(configuration);
         HTMLOutput htmlOutput = new HTMLOutput();
-        htmlOutput.writeHTMLOutput(runData);
+        htmlOutput.writeData(runData);
         verify(mockAppender).doAppend(captorLoggingEvent.capture());
         PowerMockito.verifyStatic();
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
@@ -118,7 +118,7 @@ public class HTMLOutputTest {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream stream = classLoader.getResourceAsStream("test-config.properties");
         Mockito.when(HTMLOutput.class.getResourceAsStream(Mockito.anyString())).thenReturn(null).thenReturn(stream);
-        htmlOutput.writeHTMLOutput(runData);
+        htmlOutput.writeData(runData);
         verify(mockAppender).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.ERROR));

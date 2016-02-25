@@ -16,6 +16,8 @@ public class Usage implements Comparable<Usage> {
 
     private String version;
 
+    private String path;
+
     /*
      * All the fields below refer to the artifact being used
      */
@@ -92,6 +94,14 @@ public class Usage implements Comparable<Usage> {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
 }

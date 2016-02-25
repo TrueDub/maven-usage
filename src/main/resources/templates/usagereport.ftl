@@ -108,7 +108,7 @@
 						<#list runData.usages as usage>
 						<tr>
 							<td>${usage.groupId}</td>
-							<td>${usage.artifactId}</td>
+							<td><a href="file:///${usage.path}">${usage.artifactId}</a></td>
 							<td>${usage.version}</td>
 							<td>${usage.versionUsed}</td>
 							<td><#if usage.scope??>${usage.scope}<#else>&nbsp;</#if></td>
