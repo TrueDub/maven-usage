@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -99,27 +98,6 @@ public class HTMLOutputTest {
         htmlOutput.writeData(runData);
         verify(mockAppender).doAppend(captorLoggingEvent.capture());
         PowerMockito.verifyStatic();
-        final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-        Assert.assertThat(loggingEvent.getLevel(), is(Level.ERROR));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is("I/O Error when writing HTML file"));
-    }
-
-    @Test
-    public void testWriteHTMLOutputIOExceptionOnCopyFile() throws Exception {
-        Usage usage = new Usage();
-        RunData runData = new RunData();
-        runData.getUsages().add(usage);
-        File searchDir = tempInputFolder.newFolder();
-        runData.setSearchDirectory(searchDir.getAbsolutePath());
-        File outputDir = tempInputFolder.newFolder();
-        runData.setOutputDirectory(outputDir.getAbsolutePath());
-        HTMLOutput htmlOutput = new HTMLOutput();
-        PowerMockito.mockStatic(HTMLOutput.class);
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream stream = classLoader.getResourceAsStream("test-config.properties");
-        Mockito.when(HTMLOutput.class.getResourceAsStream(Mockito.anyString())).thenReturn(null).thenReturn(stream);
-        htmlOutput.writeData(runData);
-        verify(mockAppender).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.ERROR));
         Assert.assertThat(loggingEvent.getFormattedMessage(), is("I/O Error when writing HTML file"));

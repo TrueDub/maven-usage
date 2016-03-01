@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset="utf-8">
 <link rel="icon" href="favicon.ico">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/dataTables.bootstrap.min.css" rel="stylesheet">
