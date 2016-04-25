@@ -25,7 +25,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MutablePropertySources;
 
 import com.castlemon.maven.control.Controller;
 
@@ -70,20 +69,18 @@ public class UsageAnalyserTest {
 
     @Test
     public void testMainDefaults() throws Exception {
-        String group = "--group=junit";
-        String artifact = "--artifact=junit";
-        String outputDir = "--outputDir=" + tempFolder.newFolder();
+        String group = "-group=junit";
+        String artifact = "-artifact=junit";
+        String outputDir = "-outputDir=" + tempFolder.newFolder();
         String[] args = { group, artifact, outputDir };
-        MutablePropertySources propSources = new MutablePropertySources();
         ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
         AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
         Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
         Controller controller = Mockito.mock(Controller.class);
         Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
         PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
         UsageAnalyser.main(args);
-        verify(mockAppender, times(4)).doAppend(captorLoggingEvent.capture());
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
         Assert.assertThat(loggingEvent.getFormattedMessage(), is("Analysis run complete"));
@@ -91,16 +88,14 @@ public class UsageAnalyserTest {
 
     @Test
     public void testMainNoDefaults() throws Exception {
-        String group = "--group=junit";
-        String artifact = "--artifact=junit";
-        String outputDir = "--outputDir=" + tempFolder.newFolder();
-        String searchDir = "--searchDir=" + tempFolder.newFolder();
-        String outputFormats = "--outputFormats=CSV";
-        String repo = "--repo=" + tempFolder.newFolder();
+        String group = "-group=junit";
+        String artifact = "-artifact=junit";
+        String outputDir = "-outputDir=" + tempFolder.newFolder();
+        String searchDir = "-searchDir=" + tempFolder.newFolder();
+        String outputFormats = "-outputFormats=CSV";
+        String repo = "-repo=" + tempFolder.newFolder();
         String[] args = { group, artifact, outputDir, searchDir, outputFormats, repo };
-        MutablePropertySources propSources = new MutablePropertySources();
         ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
         AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
         Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
         Controller controller = Mockito.mock(Controller.class);
@@ -115,97 +110,37 @@ public class UsageAnalyserTest {
 
     @Test
     public void testMainOptions() throws Exception {
-        String options = "--options";
-        String[] args = { options };
-        MutablePropertySources propSources = new MutablePropertySources();
+        String group = "-group=junit";
+        String artifact = "-artifact=junit";
+        String outputDir = "-outputDir=" + tempFolder.newFolder();
+        String[] args = { group, artifact, outputDir };
         ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
         AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
         Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
         Controller controller = Mockito.mock(Controller.class);
         Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
         PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
         UsageAnalyser.main(args);
-        verify(mockAppender, times(15)).doAppend(captorLoggingEvent.capture());
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is(" "));
+        Assert.assertThat(loggingEvent.getFormattedMessage(), is("Analysis run complete"));
     }
 
     @Test
     public void testMainHelp() throws Exception {
-        String options = "--help";
+        String options = "-help=help";
         String[] args = { options };
-        MutablePropertySources propSources = new MutablePropertySources();
         ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
         AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
         Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
         Controller controller = Mockito.mock(Controller.class);
         Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
         PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
         UsageAnalyser.main(args);
-        verify(mockAppender, times(15)).doAppend(captorLoggingEvent.capture());
+        verify(mockAppender, times(1)).doAppend(captorLoggingEvent.capture());
         final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
         Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is(" "));
-    }
-
-    @Test
-    public void testMainNoGroup() throws Exception {
-        String[] args = {};
-        MutablePropertySources propSources = new MutablePropertySources();
-        ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
-        AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
-        Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
-        Controller controller = Mockito.mock(Controller.class);
-        Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
-        PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
-        UsageAnalyser.main(args);
-        verify(mockAppender, times(17)).doAppend(captorLoggingEvent.capture());
-        final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-        Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is("Analysis run halted with errors"));
-    }
-
-    @Test
-    public void testMainNoArtifact() throws Exception {
-        String group = "--group=junit";
-        String[] args = { group };
-        MutablePropertySources propSources = new MutablePropertySources();
-        ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
-        AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
-        Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
-        Controller controller = Mockito.mock(Controller.class);
-        Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
-        PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
-        UsageAnalyser.main(args);
-        verify(mockAppender, times(17)).doAppend(captorLoggingEvent.capture());
-        final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-        Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is("Analysis run halted with errors"));
-    }
-
-    @Test
-    public void testMainNoOutputDir() throws Exception {
-        String group = "--group=junit";
-        String artifact = "--artifact=junit";
-        String[] args = { group, artifact };
-        MutablePropertySources propSources = new MutablePropertySources();
-        ConfigurableEnvironment configurableEnvironment = Mockito.mock(ConfigurableEnvironment.class);
-        Mockito.when(configurableEnvironment.getPropertySources()).thenReturn(propSources);
-        AnnotationConfigApplicationContext context = Mockito.mock(AnnotationConfigApplicationContext.class);
-        Mockito.when(context.getEnvironment()).thenReturn(configurableEnvironment);
-        Controller controller = Mockito.mock(Controller.class);
-        Mockito.when(context.getBean(Mockito.anyString())).thenReturn(controller);
-        PowerMockito.whenNew(AnnotationConfigApplicationContext.class).withNoArguments().thenReturn(context);
-        UsageAnalyser.main(args);
-        verify(mockAppender, times(17)).doAppend(captorLoggingEvent.capture());
-        final LoggingEvent loggingEvent = captorLoggingEvent.getValue();
-        Assert.assertThat(loggingEvent.getLevel(), is(Level.INFO));
-        Assert.assertThat(loggingEvent.getFormattedMessage(), is("Analysis run halted with errors"));
     }
 
 }

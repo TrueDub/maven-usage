@@ -14,18 +14,18 @@ The utility is executed using the following command:
 java -jar maven-usage.jar list-of-params
 ```
 
-Executing the utility with either --options or --help will give you a list of parameters and their defaults, if any.
+Executing the utility with either -options or -help will give you a list of parameters and their defaults, if any.
 
 The available params are:
 
 Entry | Purpose | Mandatory? | Default 
 ------|---------|------------|---------
---group= | group to be searched for | Yes | none
---artifact= | artifact to be searched for | Yes | none
---outputDirectory= | output directory - where the CSVs or reports will be written to | Yes | none
---searchDir= | directory to be searched - part of a local repo, or a specific directory within a local repo (to narrow the search)  | No | ~/.m2/repository
---outputFormat= | output format(s) - comma-separated list (currently HTML and CSV supported)  | No | HTML
---repo= | Maven local repo  | No | ~/.m2/repository
+-group= | group to be searched for | Yes | none
+-artifact= | artifact to be searched for | Yes | none
+-outputDir= | output directory - where the CSVs or reports will be written to | Yes | none
+-searchDir= | directory to be searched - part of a local repo, or a specific directory within a local repo (to narrow the search)  | No | ~/.m2/repository
+-outputFormats= | output format(s) - a comma-separated list of formats (currently HTML and CSV supported)  | No | HTML
+-repo= | Maven local repo  | No | ~/.m2/repository
 
 ## License
 

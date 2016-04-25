@@ -13,6 +13,17 @@ public class RunDataTest {
     }
 
     @Test
+    public void testDisplayHelp() {
+        RunData data = new RunData();
+        data.setHelpParameter("");
+        Assert.assertFalse(data.displayHelp());
+        data.setHelpParameter("true");
+        Assert.assertTrue(data.displayHelp());
+        data.setHelpParameter(null);
+        Assert.assertFalse(data.displayHelp());
+    }
+
+    @Test
     public void testOther() {
         RunData runData = new RunData();
         Assert.assertEquals(0, runData.getOccurrencesFound());

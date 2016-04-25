@@ -6,163 +6,194 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
+
+@Parameters(separators = "=")
 public class RunData {
 
-  // input data
-  private String group;
+    // input data
 
-  private String artifact;
+    @Parameter(names = { "-group" }, description = "group to be searched for", required = true)
+    private String group;
 
-  private String searchDirectory;
+    @Parameter(names = { "-artifact" }, description = "artifact to be searched for", required = true)
+    private String artifact;
 
-  private List<String> outputFormats = new ArrayList<String>();
+    @Parameter(names = {
+            "-outputDir" }, description = "output directory - where the CSVs or reports will be written to", required = true)
+    private String outputDirectory;
 
-  private String outputDirectory;
+    @Parameter(names = {
+            "-searchDir" }, description = "directory to be searched - part of a local repo, or a specific directory within a local repo (to narrow the search)")
+    private String searchDirectory;
 
-  private String repo;
+    @Parameter(names = "-outputFormats", description = "output format(s) - comma-separated list (currently HTML and CSV supported)")
+    private List<String> outputFormats = new ArrayList<String>();
 
-  // run data
+    @Parameter(names = { "-repo" }, description = "the Maven repo")
+    private String repo;
 
-  private List<Usage> usages = new ArrayList<Usage>();
+    @Parameter(names = { "-help", "-options" }, description = "display help message", help = true)
+    private String helpParameter;
 
-  private long executionTimeInMillis;
+    // run data
 
-  // stats on poms read
+    private List<Usage> usages = new ArrayList<Usage>();
 
-  private int pomsRead;
+    private long executionTimeInMillis;
 
-  private int pomsProcessed;
+    // stats on poms read
 
-  private int pomsReadError;
+    private int pomsRead;
 
-  private List<String> pomsInError = new ArrayList<String>();
+    private int pomsProcessed;
 
-  // stats on processed usages
+    private int pomsReadError;
 
-  private Map<String, Integer> versionCounts = new TreeMap<String, Integer>();
+    private List<String> pomsInError = new ArrayList<String>();
 
-  // **********************************************
+    // stats on processed usages
 
-  public int getOccurrencesFound() {
-    return usages.size();
-  }
+    private Map<String, Integer> versionCounts = new TreeMap<String, Integer>();
 
-  public String getFormattedElapsedTime() {
-    return String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(executionTimeInMillis),
-        TimeUnit.MILLISECONDS.toSeconds(executionTimeInMillis)
-            - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(executionTimeInMillis)));
-  }
+    // **********************************************
 
-  public void incrementPomsProcessed() {
-    pomsProcessed++;
-  }
+    public boolean displayHelp() {
+        if (helpParameter == null || helpParameter.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 
-  public void incrementPomsReadError() {
-    pomsReadError++;
-  }
+    public int getOccurrencesFound() {
+        return usages.size();
+    }
 
-  public String getGroup() {
-    return group;
-  }
+    public String getFormattedElapsedTime() {
+        return String.format("%d min, %d sec", TimeUnit.MILLISECONDS.toMinutes(executionTimeInMillis),
+                TimeUnit.MILLISECONDS.toSeconds(executionTimeInMillis)
+                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(executionTimeInMillis)));
+    }
 
-  public void setGroup(String group) {
-    this.group = group;
-  }
+    public void incrementPomsProcessed() {
+        pomsProcessed++;
+    }
 
-  public String getArtifact() {
-    return artifact;
-  }
+    public void incrementPomsReadError() {
+        pomsReadError++;
+    }
 
-  public void setArtifact(String artifact) {
-    this.artifact = artifact;
-  }
+    public String getGroup() {
+        return group;
+    }
 
-  public String getSearchDirectory() {
-    return searchDirectory;
-  }
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
-  public void setSearchDirectory(String searchDir) {
-    this.searchDirectory = searchDir;
-  }
+    public String getArtifact() {
+        return artifact;
+    }
 
-  public List<String> getOutputFormats() {
-    return outputFormats;
-  }
+    public void setArtifact(String artifact) {
+        this.artifact = artifact;
+    }
 
-  public void setOutputFormats(List<String> outputFormats) {
-    this.outputFormats = outputFormats;
-  }
+    public String getSearchDirectory() {
+        return searchDirectory;
+    }
 
-  public String getOutputDirectory() {
-    return outputDirectory;
-  }
+    public void setSearchDirectory(String searchDir) {
+        this.searchDirectory = searchDir;
+    }
 
-  public void setOutputDirectory(String outputDirectory) {
-    this.outputDirectory = outputDirectory;
-  }
+    public List<String> getOutputFormats() {
+        return outputFormats;
+    }
 
-  public List<Usage> getUsages() {
-    return usages;
-  }
+    public void setOutputFormats(List<String> outputFormats) {
+        this.outputFormats = outputFormats;
+    }
 
-  public void setUsages(List<Usage> usages) {
-    this.usages = usages;
-  }
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
 
-  public long getExecutionTimeInMillis() {
-    return executionTimeInMillis;
-  }
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
-  public void setExecutionTimeInMillis(long executionTimeInMillis) {
-    this.executionTimeInMillis = executionTimeInMillis;
-  }
+    public List<Usage> getUsages() {
+        return usages;
+    }
 
-  public int getPomsRead() {
-    return pomsRead;
-  }
+    public void setUsages(List<Usage> usages) {
+        this.usages = usages;
+    }
 
-  public void setPomsRead(int pomsRead) {
-    this.pomsRead = pomsRead;
-  }
+    public long getExecutionTimeInMillis() {
+        return executionTimeInMillis;
+    }
 
-  public int getPomsProcessed() {
-    return pomsProcessed;
-  }
+    public void setExecutionTimeInMillis(long executionTimeInMillis) {
+        this.executionTimeInMillis = executionTimeInMillis;
+    }
 
-  public void setPomsProcessed(int pomsProcessed) {
-    this.pomsProcessed = pomsProcessed;
-  }
+    public int getPomsRead() {
+        return pomsRead;
+    }
 
-  public int getPomsReadError() {
-    return pomsReadError;
-  }
+    public void setPomsRead(int pomsRead) {
+        this.pomsRead = pomsRead;
+    }
 
-  public void setPomsReadError(int pomsReadError) {
-    this.pomsReadError = pomsReadError;
-  }
+    public int getPomsProcessed() {
+        return pomsProcessed;
+    }
 
-  public List<String> getPomsInError() {
-    return pomsInError;
-  }
+    public void setPomsProcessed(int pomsProcessed) {
+        this.pomsProcessed = pomsProcessed;
+    }
 
-  public void setPomsInError(List<String> pomsInError) {
-    this.pomsInError = pomsInError;
-  }
+    public int getPomsReadError() {
+        return pomsReadError;
+    }
 
-  public Map<String, Integer> getVersionCounts() {
-    return versionCounts;
-  }
+    public void setPomsReadError(int pomsReadError) {
+        this.pomsReadError = pomsReadError;
+    }
 
-  public void setVersionCounts(Map<String, Integer> versionCounts) {
-    this.versionCounts = versionCounts;
-  }
+    public List<String> getPomsInError() {
+        return pomsInError;
+    }
 
-  public String getRepo() {
-    return repo;
-  }
+    public void setPomsInError(List<String> pomsInError) {
+        this.pomsInError = pomsInError;
+    }
 
-  public void setRepo(String repo) {
-    this.repo = repo;
-  }
+    public Map<String, Integer> getVersionCounts() {
+        return versionCounts;
+    }
+
+    public void setVersionCounts(Map<String, Integer> versionCounts) {
+        this.versionCounts = versionCounts;
+    }
+
+    public String getRepo() {
+        return repo;
+    }
+
+    public void setRepo(String repo) {
+        this.repo = repo;
+    }
+
+    public String getHelpParameter() {
+        return helpParameter;
+    }
+
+    public void setHelpParameter(String helpParameter) {
+        this.helpParameter = helpParameter;
+    }
 
 }

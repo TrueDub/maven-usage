@@ -4,6 +4,6 @@ import com.castlemon.maven.domain.RunData;
 
 public interface Output {
 
-  public void writeData(RunData runData);
+    void writeData(RunData runData);
 
 }
