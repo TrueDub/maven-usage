@@ -7,7 +7,7 @@
   "info": {
     "description": "Direct+ Calls",
     "title": "Direct+",
-    "version": "0.0.1"
+    "version": "1.0.0"
   },
   "basePath": "/v1/data",
   "paths": {
