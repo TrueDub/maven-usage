@@ -1,0 +1,7 @@
+{
+  "in": "query",
+  "name": "productId",
+  "description": "product ID",
+  "type": "string",
+  "required": true
+}

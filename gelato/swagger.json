@@ -817,11 +817,7 @@
         "security": [],
         "parameters": [
           {
-            "in": "query",
-            "name": "productId",
-            "description": "product ID",
-            "type": "string",
-            "required": true
+            "$ref": "productId.json"
           },
           {
             "in": "query",
@@ -847,5 +843,8 @@
         ]
       }
     }
+  },
+  "parameters" : {
+
   }
 }
