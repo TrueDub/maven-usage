@@ -1,0 +1,149 @@
+{
+  "swagger": "2.0",
+  "host": "plus.dnb.com",
+  "schemes": [
+    "https"
+  ],
+  "info": {
+    "description": "Authentication API",
+    "title": "Direct+ Authentication",
+    "version": "1.0.0"    
+  },
+  "basePath": "/v2",
+  "paths": {
+    "/token": {
+      "post": {
+        "description": "Retrieve access tokens on presentation of valid credentials",
+        "summary": "Retrieve access token",
+        "operationId": "Authentication",
+        "tags": [
+          "authentication"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+		"200": {
+            "description": "OK",
+            "schema": {
+              "description": "correct return, contains access token in the body",
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "expiresIn": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "access_token",
+                "expiresIn"
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "transactionDetail": {
+                  "type": "object",
+                  "properties": {
+                    "transactionID": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "transactionTimestamp": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "inLanguage": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productID": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productVersion": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "transactionID",
+                    "transactionTimestamp",
+                    "inLanguage",
+                    "productID",
+                    "productVersion"
+                  ]
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "errorMessage": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "errorMessage",
+                    "errorCode"
+                  ]
+                }
+              },
+              "required": [
+                "transactionDetail",
+                "error"
+              ]
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Authorization header - must be of the format 'Basic <base64encoded string of credentials>'",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "description": "content type - must be application/json",
+            "required": true,
+            "type": "string",
+            "enum": [" application/json"]
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "must be a valid json object containing 1 field grant_type with a value of client_credentials",
+            "required": true,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "grant_type": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "grant_type"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

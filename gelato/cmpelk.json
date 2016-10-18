@@ -1,0 +1,1132 @@
+{
+  "swagger": "2.0",
+  "host": "plus.dnb.com",
+  "schemes": [
+    "https"
+  ],
+  "info": {
+    "description": "Direct+ data product retrievals",
+    "title": "Direct+ Data call",
+    "version": "0.0.1",
+    "termsOfService": "http://example.com/about/terms",
+    "contact": {
+      "name": "API Docs",
+      "url": "http://example.com/contact",
+      "email": "apidocs@example.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://example.com"
+    }
+  },
+  "basePath": "/v1/data/duns",
+  "paths": {
+    "/{dunsNumber}": {
+      "get": {
+        "description": "Returns data products from the Direct+ Universe",
+        "summary": "returns CMPELK product",
+        "externalDocs": {
+          "description": "Find out more",
+          "url": "http://docs.example.com/management/apis/get/entities"
+        },
+        "operationId": "cmpelk",
+        "tags": [
+          "cmpelk"
+        ],
+        "produces": [
+          "application/json;charset=utf-8"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "transactionDetail": {
+                  "type": "object",
+                  "properties": {
+                    "transactionID": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "transactionTimestamp": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "inLanguage": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productID": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productVersion": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "transactionID",
+                    "transactionTimestamp",
+                    "inLanguage",
+                    "productID",
+                    "productVersion"
+                  ]
+                },
+                "inquiryDetail": {
+                  "type": "object",
+                  "properties": {
+                    "duns": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productID": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "productVersion": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "duns",
+                    "productID",
+                    "productVersion"
+                  ]
+                },
+                "organization": {
+                  "type": "object",
+                  "properties": {
+                    "duns": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "dunsControlStatus": {
+                      "type": "object",
+                      "properties": {
+                        "operatingStatus": {
+                          "type": "object",
+                          "properties": {
+                            "description": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "dnbCode": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "description",
+                            "dnbCode"
+                          ]
+                        },
+                        "isMarketable": {
+                          "type": "boolean"
+                        },
+                        "isMailUndeliverable": {
+                          "type": "boolean"
+                        },
+                        "isTelephoneDisconnected": {
+                          "type": "boolean"
+                        },
+                        "isDelisted": {
+                          "type": "boolean"
+                        },
+                        "subjectHandlingDetails": {
+                          "type": "array",
+                          "items": {
+                            "properties": {}
+                          }
+                        },
+                        "fullReportDate": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "lastUpdateDate": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "operatingStatus",
+                        "isMarketable",
+                        "isMailUndeliverable",
+                        "isTelephoneDisconnected",
+                        "isDelisted",
+                        "subjectHandlingDetails",
+                        "fullReportDate",
+                        "lastUpdateDate"
+                      ]
+                    },
+                    "primaryName": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "tradeStyleNames": {
+                      "type": "array",
+                      "items": {
+                        "properties": {}
+                      }
+                    },
+                    "websiteAddress": {
+                      "type": "array",
+                      "items": {
+                        "properties": {}
+                      }
+                    },
+                    "telephone": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "telephoneNumber",
+                          "isdCode",
+                          "isUnreachable"
+                        ],
+                        "properties": {
+                          "telephoneNumber": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "isdCode": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "isUnreachable": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "fax": {
+                      "type": "array",
+                      "items": {
+                        "properties": {}
+                      }
+                    },
+                    "primaryAddress": {
+                      "type": "object",
+                      "properties": {
+                        "language": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "addressCountry": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "isoAlpha2Code": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "fipsCode": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "isoAlpha2Code",
+                            "fipsCode"
+                          ]
+                        },
+                        "continentalRegion": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "addressLocality": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "name"
+                          ]
+                        },
+                        "minorTownName": {},
+                        "addressRegion": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "abbreviatedName": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "fipsCode": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "abbreviatedName",
+                            "fipsCode"
+                          ]
+                        },
+                        "addressCounty": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "fipsCode": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "fipsCode"
+                          ]
+                        },
+                        "postalCode": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "postalCodePosition": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "streetNumber": {},
+                        "streetName": {},
+                        "streetAddress": {
+                          "type": "object",
+                          "properties": {
+                            "line1": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "line2": {}
+                          },
+                          "required": [
+                            "line1"
+                          ]
+                        },
+                        "postOfficeBox": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "latitude": {
+                          "type": "number"
+                        },
+                        "longitude": {
+                          "type": "number"
+                        },
+                        "geographicalPrecision": {
+                          "type": "object",
+                          "properties": {
+                            "description": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "dnbCode": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "description",
+                            "dnbCode"
+                          ]
+                        },
+                        "isRegisteredAddress": {
+                          "type": "boolean"
+                        },
+                        "statisticalArea": {
+                          "type": "object",
+                          "properties": {
+                            "cbsaName": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "cbsaCode": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "economicAreaOfInfluenceCode": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "populationRank": {
+                              "type": "object",
+                              "properties": {
+                                "rankNumber": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "rankDnBCode": {
+                                  "type": "number"
+                                },
+                                "rankDescription": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "required": [
+                                "rankNumber",
+                                "rankDnBCode",
+                                "rankDescription"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "cbsaName",
+                            "cbsaCode",
+                            "economicAreaOfInfluenceCode",
+                            "populationRank"
+                          ]
+                        },
+                        "locationOwnership": {
+                          "type": "object",
+                          "properties": {
+                            "description": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "dnbCode": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "description",
+                            "dnbCode"
+                          ]
+                        },
+                        "premisesArea": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "isManufacturingLocation": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "language",
+                        "addressCountry",
+                        "continentalRegion",
+                        "addressLocality",
+                        "addressRegion",
+                        "addressCounty",
+                        "postalCode",
+                        "postalCodePosition",
+                        "streetAddress",
+                        "postOfficeBox",
+                        "latitude",
+                        "longitude",
+                        "geographicalPrecision",
+                        "isRegisteredAddress",
+                        "statisticalArea",
+                        "locationOwnership",
+                        "premisesArea",
+                        "isManufacturingLocation"
+                      ]
+                    },
+                    "registeredAddress": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "mailingAddress": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "stockExchanges": {
+                      "type": "array",
+                      "items": {
+                        "properties": {}
+                      }
+                    },
+                    "thirdPartyAssessment": {
+                      "type": "array",
+                      "items": {
+                        "properties": {}
+                      }
+                    },
+                    "registrationNumbers": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "registrationNumber",
+                          "typeDescription",
+                          "typeDnBCode"
+                        ],
+                        "properties": {
+                          "registrationNumber": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "typeDescription": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "typeDnBCode": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "industryCodes": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "code",
+                          "description",
+                          "typeDescription",
+                          "typeDnBCode",
+                          "priority"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "description": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "typeDescription": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "typeDnBCode": {
+                            "type": "number"
+                          },
+                          "priority": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "businessEntityType": {
+                      "type": "object",
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "dnbCode": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "description",
+                        "dnbCode"
+                      ]
+                    },
+                    "controlOwnershipDate": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "controlOwnershipType": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "isAgent": {},
+                    "isImporter": {},
+                    "isExporter": {},
+                    "numberOfEmployees": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "value",
+                          "informationScopeDescription",
+                          "informationScopeDnBCode",
+                          "reliabilityDescription",
+                          "reliabilityDnBCode"
+                        ],
+                        "properties": {
+                          "value": {
+                            "type": "number"
+                          },
+                          "informationScopeDescription": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "informationScopeDnBCode": {
+                            "type": "number"
+                          },
+                          "reliabilityDescription": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reliabilityDnBCode": {
+                            "type": "number"
+                          },
+                          "employeeCategories": {
+                            "type": "array",
+                            "items": {
+                              "properties": {}
+                            }
+                          },
+                          "trend": {
+                            "type": "array",
+                            "items": {
+                              "properties": {}
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "financials": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "financialStatementToDate",
+                          "reliabilityDescription",
+                          "reliabilityDnBCode",
+                          "unitCode",
+                          "accountantName"
+                        ],
+                        "properties": {
+                          "financialStatementToDate": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "financialStatementDuration": {},
+                          "informationScopeDescription": {},
+                          "informationScopeDnBCode": {},
+                          "reliabilityDescription": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "reliabilityDnBCode": {
+                            "type": "number"
+                          },
+                          "unitCode": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "accountantName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "yearlyRevenue": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "items": {
+                              "required": [
+                                "value",
+                                "currency"
+                              ],
+                              "properties": {
+                                "value": {
+                                  "type": "number"
+                                },
+                                "currency": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "trend": {
+                                  "type": "array",
+                                  "items": {
+                                    "properties": {}
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "mostSeniorPrincipals": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "givenName",
+                          "familyName",
+                          "fullName"
+                        ],
+                        "properties": {
+                          "givenName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "familyName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "fullName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "namePrefix": {},
+                          "nameSuffix": {},
+                          "gender": {},
+                          "jobTitles": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "items": {
+                              "required": [
+                                "title"
+                              ],
+                              "properties": {
+                                "title": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "managementResponsibilities": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "items": {
+                              "required": [
+                                "description",
+                                "mrcCode"
+                              ],
+                              "properties": {
+                                "description": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "mrcCode": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "currentPrincipals": {
+                      "type": "array",
+                      "uniqueItems": true,
+                      "minItems": 1,
+                      "items": {
+                        "required": [
+                          "givenName",
+                          "familyName",
+                          "fullName"
+                        ],
+                        "properties": {
+                          "givenName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "familyName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "fullName": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "namePrefix": {},
+                          "nameSuffix": {},
+                          "gender": {},
+                          "jobTitles": {
+                            "type": "array",
+                            "items": {
+                              "properties": {}
+                            }
+                          },
+                          "managementResponsibilities": {
+                            "type": "array",
+                            "items": {
+                              "properties": {}
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "socioEconomicInformation": {
+                      "type": "object",
+                      "properties": {
+                        "isMinorityOwned": {},
+                        "isSmallBusiness": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "isSmallBusiness"
+                      ]
+                    },
+                    "isStandalone": {
+                      "type": "boolean"
+                    },
+                    "corporateLinkage": {
+                      "type": "object",
+                      "properties": {
+                        "familytreeRolesPlayed": {
+                          "type": "array",
+                          "uniqueItems": true,
+                          "minItems": 1,
+                          "items": {
+                            "required": [
+                              "description",
+                              "dnbCode"
+                            ],
+                            "properties": {
+                              "description": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "dnbCode": {
+                                "type": "number"
+                              }
+                            }
+                          }
+                        },
+                        "hierarchyLevel": {
+                          "type": "number"
+                        },
+                        "globalUltimateFamilyTreeMembersCount": {
+                          "type": "number"
+                        },
+                        "globalUltimate": {
+                          "type": "object",
+                          "properties": {
+                            "duns": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "primaryName": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "primaryAddress": {
+                              "type": "object",
+                              "properties": {
+                                "addressCountry": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "isoAlpha2Code": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "fipsCode": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name",
+                                    "isoAlpha2Code",
+                                    "fipsCode"
+                                  ]
+                                },
+                                "continentalRegion": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name"
+                                  ]
+                                },
+                                "addressLocality": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name"
+                                  ]
+                                },
+                                "addressRegion": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "abbreviatedName": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name",
+                                    "abbreviatedName"
+                                  ]
+                                },
+                                "postalCode": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "streetAddress": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "line2": {}
+                                  },
+                                  "required": [
+                                    "line1"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "addressCountry",
+                                "continentalRegion",
+                                "addressLocality",
+                                "addressRegion",
+                                "postalCode",
+                                "streetAddress"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "duns",
+                            "primaryName",
+                            "primaryAddress"
+                          ]
+                        },
+                        "domesticUltimate": {
+                          "type": "object",
+                          "properties": {
+                            "duns": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "primaryName": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "primaryAddress": {
+                              "type": "object",
+                              "properties": {
+                                "addressCountry": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "isoAlpha2Code": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "fipsCode": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name",
+                                    "isoAlpha2Code",
+                                    "fipsCode"
+                                  ]
+                                },
+                                "continentalRegion": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name"
+                                  ]
+                                },
+                                "addressLocality": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name"
+                                  ]
+                                },
+                                "addressRegion": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "abbreviatedName": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    }
+                                  },
+                                  "required": [
+                                    "name",
+                                    "abbreviatedName"
+                                  ]
+                                },
+                                "postalCode": {
+                                  "type": "string",
+                                  "minLength": 1
+                                },
+                                "streetAddress": {
+                                  "type": "object",
+                                  "properties": {
+                                    "line1": {
+                                      "type": "string",
+                                      "minLength": 1
+                                    },
+                                    "line2": {}
+                                  },
+                                  "required": [
+                                    "line1"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "addressCountry",
+                                "continentalRegion",
+                                "addressLocality",
+                                "addressRegion",
+                                "postalCode",
+                                "streetAddress"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "duns",
+                            "primaryName",
+                            "primaryAddress"
+                          ]
+                        },
+                        "parent": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "headQuarter": {
+                          "type": "object",
+                          "properties": {}
+                        }
+                      },
+                      "required": [
+                        "familytreeRolesPlayed",
+                        "hierarchyLevel",
+                        "globalUltimateFamilyTreeMembersCount",
+                        "globalUltimate",
+                        "domesticUltimate",
+                        "parent",
+                        "headQuarter"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "duns",
+                    "dunsControlStatus",
+                    "primaryName",
+                    "tradeStyleNames",
+                    "websiteAddress",
+                    "telephone",
+                    "fax",
+                    "primaryAddress",
+                    "registeredAddress",
+                    "mailingAddress",
+                    "stockExchanges",
+                    "thirdPartyAssessment",
+                    "registrationNumbers",
+                    "industryCodes",
+                    "businessEntityType",
+                    "controlOwnershipDate",
+                    "controlOwnershipType",
+                    "numberOfEmployees",
+                    "financials",
+                    "mostSeniorPrincipals",
+                    "currentPrincipals",
+                    "socioEconomicInformation",
+                    "isStandalone",
+                    "corporateLinkage"
+                  ]
+                }
+              },
+              "required": [
+                "transactionDetail",
+                "inquiryDetail",
+                "organization"
+              ]
+            }
+          }
+        },
+        "security": [],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "productId",
+            "description": "id of the required product",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "cmpelk"
+            ]
+          },
+          {
+            "in": "query",
+            "name": "versionId",
+            "description": "version of the required product",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "v1"
+            ]
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "contains the access token",
+            "required": true,
+            "type": "string",
+            "enum": [
+              " Bearer 5zNH3xcrGAkrJU7UNxiYpoRG2z8P"
+            ]
+          },
+          {
+            "in": "path",
+            "name": "dunsNumber",
+            "description": "duns number of the company to be reported on",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    }
+  }
+}
