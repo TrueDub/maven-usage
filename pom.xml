@@ -104,6 +104,26 @@
 				<artifactId>findbugs-maven-plugin</artifactId>
 				<version>3.0.3</version>
 			</plugin>
+			<plugin>
+				<!-- Deploy the web site -->
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.9</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site-deploy</phase>
+						<configuration>
+							<server>github</server>
+							<message>site dpeloyment</message>
+							<path>${site.path}</path>
+							<merge>true</merge>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>

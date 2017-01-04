@@ -65,6 +65,9 @@ public class UsageTest {
 		// version
 		usageOther.setVersion("2.0");
 		Assert.assertFalse(usage.equals(usageOther));
+		Assert.assertTrue(usage.equals(usage));
+		Assert.assertFalse(usage.equals(null));
+		Assert.assertFalse(usage.equals(new String("e")));
 	}
 
 	@Test
