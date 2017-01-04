@@ -1,107 +1,129 @@
 package com.castlemon.maven.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Usage implements Comparable<Usage> {
 
-    /*
-     * This class contains the fields captured when a usage of the specified artifact is found
-     */
+	/*
+	 * This class contains the fields captured when a usage of the specified
+	 * artifact is found
+	 */
 
-    /*
-     * All the fields below refer to the "using" project, not the artifact
-     */
+	/*
+	 * All the fields below refer to the "using" project, not the artifact
+	 */
 
-    private String groupId;
+	private String groupId;
 
-    private String artifactId;
+	private String artifactId;
 
-    private String version;
+	private String version;
 
-    private String path;
+	private String path;
 
-    /*
-     * All the fields below refer to the artifact being used
-     */
-    private String versionUsed;
+	/*
+	 * All the fields below refer to the artifact being used
+	 */
+	private String versionUsed;
 
-    private String scope;
+	private String scope;
 
-    public static String[] getCSVTitles() {
-        String[] titles = { "Group", "Artifact", "Version", "Version Used", "Scope" };
-        return titles;
-    }
+	public static String[] getCSVTitles() {
+		String[] titles = { "Group", "Artifact", "Version", "Version Used", "Scope" };
+		return titles;
+	}
 
-    public String[] getCSVString() {
-        String[] fields = { groupId, artifactId, version, versionUsed, scope };
-        return fields;
-    }
+	public String[] getCSVString() {
+		String[] fields = { groupId, artifactId, version, versionUsed, scope };
+		return fields;
+	}
 
-    public String getIdentifier() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(this.groupId);
-        builder.append(":");
-        builder.append(this.artifactId);
-        builder.append(":");
-        builder.append(this.version);
-        return builder.toString();
-    }
+	public String getIdentifier() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.groupId);
+		builder.append(":");
+		builder.append(this.artifactId);
+		builder.append(":");
+		builder.append(this.version);
+		return builder.toString();
+	}
 
-    public int compareTo(Usage other) {
-        // order by group, then artifact, then version
-        if (this.groupId.equals(other.getGroupId())) {
-            if (this.artifactId.equals(other.getArtifactId())) {
-                return this.version.compareTo(other.getVersion());
-            }
-            return this.artifactId.compareTo(other.getArtifactId());
-        }
-        return this.groupId.compareTo(other.getGroupId());
-    }
+	public int compareTo(Usage other) {
+		// order by group, then artifact, then version
+		if (this.groupId.equals(other.getGroupId())) {
+			if (this.artifactId.equals(other.getArtifactId())) {
+				return this.version.compareTo(other.getVersion());
+			}
+			return this.artifactId.compareTo(other.getArtifactId());
+		}
+		return this.groupId.compareTo(other.getGroupId());
+	}
 
-    public String getGroupId() {
-        return groupId;
-    }
+	public String getGroupId() {
+		return groupId;
+	}
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 
-    public String getArtifactId() {
-        return artifactId;
-    }
+	public String getArtifactId() {
+		return artifactId;
+	}
 
-    public void setArtifactId(String artifactId) {
-        this.artifactId = artifactId;
-    }
+	public void setArtifactId(String artifactId) {
+		this.artifactId = artifactId;
+	}
 
-    public String getVersion() {
-        return version;
-    }
+	public String getVersion() {
+		return version;
+	}
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-    public String getVersionUsed() {
-        return versionUsed;
-    }
+	public String getVersionUsed() {
+		return versionUsed;
+	}
 
-    public void setVersionUsed(String versionUsed) {
-        this.versionUsed = versionUsed;
-    }
+	public void setVersionUsed(String versionUsed) {
+		this.versionUsed = versionUsed;
+	}
 
-    public String getScope() {
-        return scope;
-    }
+	public String getScope() {
+		return scope;
+	}
 
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
 
-    public String getPath() {
-        return path;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(groupId).append(artifactId).append(version).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usage other = (Usage) obj;
+		return new EqualsBuilder().append(groupId, other.groupId).append(artifactId, other.artifactId)
+				.append(version, other.version).isEquals();
+	}
 
 }
