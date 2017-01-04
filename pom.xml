@@ -10,7 +10,7 @@
 	<licenses>
 		<license>
 			<name>MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
+			<url>https://opensource.org/licenses/mit-license.php</url>
 		</license>
 	</licenses>
 	<developers>
@@ -105,6 +105,14 @@
 				<version>3.0.3</version>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<skipDeploy>true</skipDeploy>
+				</configuration>
+			</plugin>
+			<plugin>
 				<!-- Deploy the web site -->
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
@@ -114,11 +122,11 @@
 						<goals>
 							<goal>site</goal>
 						</goals>
-						<!-- <phase>site-deploy</phase> -->
+						<phase>site-deploy</phase>
 						<configuration>
 							<server>github</server>
 							<message>site deployment</message>
-							<path>${site.path}</path>
+							<path>${project.version}</path>
 							<merge>true</merge>
 						</configuration>
 					</execution>
