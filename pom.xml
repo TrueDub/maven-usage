@@ -86,7 +86,7 @@
 						</goals>
 						<phase>site-deploy</phase>
 						<configuration>
-							<server>github</server>
+							<server>https://github.com</server>
 							<message>site deployment</message>
 							<path>${project.version}</path>
 							<merge>true</merge>
