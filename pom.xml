@@ -21,8 +21,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:https://github.com/TrueDub/maven-usage</connection>
-		<developerConnection>scm:git:https://github.com/TrueDub/maven-usage</developerConnection>
+		<connection>scm:git:https://github.com/TrueDub/maven-usage.git</connection>
+		<developerConnection>scm:git:https://github.com/TrueDub/maven-usage.git</developerConnection>
 		<url>https://github.com/TrueDub/maven-usage</url>
 	</scm>
 	<properties>
