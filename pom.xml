@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.castlemon.maven</groupId>
 	<artifactId>maven-usage</artifactId>
-	<version>1.0.0.0-SNAPSHOT</version>
+	<version>1.0.0.1-SNAPSHOT</version>
 	<name>Maven Usage Analyser</name>
 	<description>Examines a Maven repo to determine where a specified project is used</description>
 	<url>https://github.com/TrueDub/maven-usage</url>
