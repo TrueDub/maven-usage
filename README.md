@@ -34,3 +34,9 @@ This code is distributed under the MIT license - please see LICENSE.md for detai
 ## Acknowledgements
 
 The code to test logging messages was adapted from the code supplied on http://bloodredsun.com/2014/06/03/checking-logback-based-logging-in-unit-tests/.
+
+## Releases
+
+Date | Version | Update
+-----|---------|--------
+27 April 2017 | v1.0.0.1 | Initial Release
